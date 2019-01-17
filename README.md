@@ -18,7 +18,7 @@ a command line tool called `bananas`.
 This runs through the installation and usage 
 of 2019-snakemake-cli.
 
-## Installing banana
+## Installing bananas
 
 Start by setting up a virtual environment,
 and install the required packages into the
@@ -37,13 +37,13 @@ python setup.py build install
 Now you can run
 
 ```
-which banana
+which bananas
 ```
 
 and you should see `bananas` in your Python 
 distribution's `bin/` directory.
 
-## Running banana
+## Running bananas
 
 Move to the `test/` directory and run the tests
 with the provided config and params files.
