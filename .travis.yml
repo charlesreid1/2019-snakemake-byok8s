@@ -1,0 +1,14 @@
+# https://docs.travis-ci.com/user/languages/python/
+language: python
+python:
+  - "3.5"
+  - "3.6"
+  #- "3.7-dev" # fails due to datrie build failure (snakemake dependency)
+# command to install dependencies
+install:
+  - pip install -r requirements.txt
+  - python setup.py build install
+# command to run tests
+script:
+  - pytest
+

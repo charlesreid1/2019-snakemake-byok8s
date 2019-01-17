@@ -1,0 +1,17 @@
+appdirs==1.4.3
+certifi==2018.11.29
+chardet==3.0.4
+ConfigArgParse==0.14.0
+datrie==0.7.1
+docutils==0.14
+gitdb2==2.0.5
+GitPython==2.1.11
+idna==2.8
+jsonschema==2.6.0
+PyYAML==3.13
+ratelimiter==1.2.0.post0
+requests==2.21.0
+smmap2==2.0.5
+snakemake==5.4.0
+urllib3==1.24.1
+wrapt==1.11.0
