@@ -40,8 +40,8 @@ Now you can run
 which bananas
 ```
 
-and you should see `bananas` in your Python 
-distribution's `bin/` directory.
+and you should see `bananas` in your virtual 
+environment's `bin/` directory.
 
 ## Running bananas
 
