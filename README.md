@@ -66,7 +66,7 @@ Run the goodbye workflow with Beth params:
 
 ```
 rm -f goodbye.txt
-./run workflow-goodbye params-beth
+bananas workflow-goodbye params-beth
 ```
 
 # Details
