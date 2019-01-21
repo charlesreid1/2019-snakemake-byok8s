@@ -8,7 +8,7 @@ gitdb2==2.0.5
 GitPython==2.1.11
 idna==2.8
 jsonschema==2.6.0
-PyYAML==3.13
+PyYAML>=4.2b1
 ratelimiter==1.2.0.post0
 requests==2.21.0
 smmap2==2.0.5
