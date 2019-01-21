@@ -17,29 +17,28 @@ cwd = os.getcwd()
 
 def main(sysargs = sys.argv[1:]):
 
-    parser = argparse.ArgumentParser(prog = _program, description='bananas: run snakemake workflows', usage='''bananas <workflow> <parameters> [<target>]
+    parser = argparse.ArgumentParser(prog = _program, description='byok8s: run snakemake workflows on your own kubernetes cluster', usage='''byok8s <workflow> <parameters> [<target>]
 
-bananas: run snakemake workflows, using the given workflow name & parameters file.
+byok8s: run snakemake workflows on your own kubernetes cluster, using the given workflow name & parameters file.
 
 ''')
 
-    parser.add_argument('workflowfile')
-    parser.add_argument('paramsfile')
+    parser.add_argument('-w', '--workflowfile', action='store_true')
+    parser.add_argument('-p', '--paramsfile', action='store_true')
+
+    parser.add_argument('-k', '--kubernetes-namespace', action='store_true')
+
     parser.add_argument('-n', '--dry-run', action='store_true')
     parser.add_argument('-f', '--force', action='store_true')
     args = parser.parse_args(sysargs)
 
     # first, find the Snakefile
     snakefile_this      = os.path.join(thisdir,"Snakefile")
-    snakefile_parent    = os.path.join(parentdir,"Snakefile")
     if os.path.exists(snakefile_this):
         snakefile = snakefile_this
-    elif os.path.exists(snakefile_parent):
-        snakefile = snakefile_parent
     else:
         msg = 'Error: cannot find Snakefile at any of the following locations:\n'
         msg += '{}\n'.format(snakefile_this)
-        msg += '{}\n'.format(snakefile_parent)
         sys.stderr.write(msg)
         sys.exit(-1)
 
@@ -47,6 +46,8 @@ bananas: run snakemake workflows, using the given workflow name & parameters fil
     workflowfile = None
     w1 = os.path.join(cwd,args.workflowfile)
     w2 = os.path.join(cwd,args.workflowfile+'.json')
+    # NOTE:
+    # handling yaml would be nice
     if os.path.exists(w1) and not os.path.isdir(w1):
         workflowfile = w1
     elif os.path.exists(w2) and not os.path.isdir(w2):
@@ -76,6 +77,11 @@ bananas: run snakemake workflows, using the given workflow name & parameters fil
     with open(workflowfile, 'rt') as fp:
         workflow_info = json.load(fp)
 
+    # get the kubernetes namespace
+    kube_ns = 'default'
+    if args.kubernetes_namespace not None and len(args.kubernetes_namespace)>0:
+        kube_ns = args.kubernetes_namespace
+
     target = workflow_info['workflow_target']
     config = dict()
 
@@ -85,12 +91,17 @@ bananas: run snakemake workflows, using the given workflow name & parameters fil
     print('\tconfig: {}'.format(workflowfile))
     print('\tparams: {}'.format(paramsfile))
     print('\ttarget: {}'.format(target))
+    print('\tk8s namespace: {}'.format(kube_ns))
     print('--------')
 
-    # run bananas!!
+    # run byok8s!!
     status = snakemake.snakemake(snakefile, configfile=paramsfile,
-                                 targets=[target], printshellcmds=True,
-                                 dryrun=args.dry_run, forceall=args.force,
+                                 targets=[target], 
+                                 printshellcmds=True,
+                                 verbose = True,
+                                 dryrun=args.dry_run, 
+                                 forceall=args.force,
+                                 kubernetes=kube_ns,
                                  config=config)
 
     if status: # translate "success" into shell exit code of 0
