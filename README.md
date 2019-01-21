@@ -10,7 +10,18 @@ This is an example of a Snakemake workflow that:
 - is designed to run on a Kubernetes cluster
 
 Snakemake functionality is provided through
-a command line tool called `byok8s`.
+a command line tool called `byok8s`, so that
+ultimately it enables you to do the following:
+
+```
+# run commands to set up a kubernetes cluster
+# using minikube, aws, gcp, digital ocean, etc.
+
+# run this workflow with the given 
+# workflow configuration (-w flag)
+# and workflow parameters (-p flag)
+byok8s -w my-workflow-file -p my-params-file
+```
 
 Snakemake workflows are run on a Kubernetes (k8s)
 cluster. The approach is for the user to provide
@@ -131,7 +142,7 @@ kubernetes configuration details in kube-deets
 (all json files):
 
 ```
-byok8s example/workflow-blue example/params-alpha
+byok8s -w example/workflow-blue -p example/params-alpha
 ```
 
 Run the blue workflow with gamma params, and 
@@ -139,13 +150,13 @@ kubernetes configuration details in kube-deets
 (all json files):
 
 ```
-byok8s example/workflow-blue example/params-gamma
+byok8s -w example/workflow-blue -p example/params-gamma
 ```
 
 Run the red workflow with gamma params, &c:
 
 ```
-byok8s example/workflow-red example/params-gamma 
+byok8s -w example/workflow-red -p example/params-gamma
 ```
 
 (NOTE: we also need to specify a working directory...
