@@ -147,24 +147,22 @@ won't be able to find the kubernetes cluster.)
 for workflow config and param files,
 or have a built-in set of params and configs.)
 
-Run the blue workflow with alpha params:
+Run the alpha workflow with blue params:
 
 ```
-byok8s -w workflow-blue -p params-alpha
+byok8s -w workflow-alpha -p params-blue
 ```
 
-Run the blue workflow with gamma params, and 
-kubernetes configuration details in kube-deets
-(all json files):
+Run the alpha workflow with red params:
 
 ```
-byok8s -w workflow-blue -p params-gamma
+byok8s -w workflow-alpha -p params-red
 ```
 
-Run the red workflow with gamma params, &c:
+Run the gamma workflow with red params, &c:
 
 ```
-byok8s -w workflow-red -p params-gamma
+byok8s -w workflow-gamma -p params-red
 ```
 
 (NOTE: May want to let the user specify 
