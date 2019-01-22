@@ -14,13 +14,18 @@ a command line tool called `byok8s`, so that
 ultimately it enables you to do the following:
 
 ```
-# run commands to set up a kubernetes cluster
-# using minikube, aws, gcp, digital ocean, etc.
+# install minikube
+scripts/install_minikube.sh
 
-# run this workflow with the given 
-# workflow configuration (-w flag)
-# and workflow parameters (-p flag)
-byok8s -w my-workflow-file -p my-params-file
+# deploy k8s
+minikube start
+
+# run the workflow
+cd test
+byok8s -w my-workflowfile -p my-paramsfile
+
+# clean up k8s
+minikube stop
 ```
 
 Snakemake workflows are run on a Kubernetes (k8s)

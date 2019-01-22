@@ -17,17 +17,16 @@ cwd = os.getcwd()
 
 def main(sysargs = sys.argv[1:]):
 
-    parser = argparse.ArgumentParser(prog = _program, description='byok8s: run snakemake workflows on your own kubernetes cluster', usage='''byok8s <workflow> <parameters> [<target>]
+    parser = argparse.ArgumentParser(prog = _program, description='byok8s: run snakemake workflows on your own kubernetes cluster', usage='''byok8s -w <workflow> -p <parameters> [<target>]
 
 byok8s: run snakemake workflows on your own kubernetes cluster, using the given workflow name & parameters file.
 
 ''')
 
-    parser.add_argument('-w', '--workflowfile', action='store_true')
-    parser.add_argument('-p', '--paramsfile', action='store_true')
+    parser.add_argument('workflowfile')
+    parser.add_argument('paramsfile')
 
-    parser.add_argument('-k', '--kubernetes-namespace', action='store_true')
-
+    parser.add_argument('-k', '--kubernetes-namespace')
     parser.add_argument('-n', '--dry-run', action='store_true')
     parser.add_argument('-f', '--force', action='store_true')
     args = parser.parse_args(sysargs)
@@ -79,7 +78,7 @@ byok8s: run snakemake workflows on your own kubernetes cluster, using the given 
 
     # get the kubernetes namespace
     kube_ns = 'default'
-    if args.kubernetes_namespace not None and len(args.kubernetes_namespace)>0:
+    if args.kubernetes_namespace is not None and len(args.kubernetes_namespace)>0:
         kube_ns = args.kubernetes_namespace
 
     target = workflow_info['workflow_target']
@@ -101,7 +100,7 @@ byok8s: run snakemake workflows on your own kubernetes cluster, using the given 
                                  verbose = True,
                                  dryrun=args.dry_run, 
                                  forceall=args.force,
-                                 kubernetes=kube_ns,
+                                 #kubernetes=kube_ns,
                                  config=config)
 
     if status: # translate "success" into shell exit code of 0

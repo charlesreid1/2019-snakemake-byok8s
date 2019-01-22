@@ -9,13 +9,13 @@ with open('requirements.txt') as f:
 # it determines the name of the package/final command line tool.
 from cli import __version__, _program
 
-setup(name='bananas',
+setup(name='byok8s',
       version=__version__,
       packages=['cli'],
       test_suite='pytest.collector',
       tests_require=['pytest'],
-      description='bananas command line interface',
-      url='https://charlesreid1.github.io/2019-snakemake-cli',
+      description='byok8s command line interface',
+      url='https://charlesreid1.github.io/2019-snakemake-byok8s',
       author='@charlesreid1',
       author_email='cmreid@ucdavis.edu',
       license='MIT',
