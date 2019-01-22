@@ -1,5 +1,7 @@
+__pycache__
 .snakemake/
 vp/
 *.egg-info/
 build/
 dist/
+test/*.txt
