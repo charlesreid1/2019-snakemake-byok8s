@@ -85,6 +85,14 @@ with minikube using the following command:
 minikube start
 ```
 
+NOTE: If you are running on AWS, 
+
+```
+minikube config set vm-driver none
+```
+
+to set the the vm driver to none and use native Docker to run stuff.
+
 ## Step 2: Install byok8s
 
 Start by setting up a python virtual environment,
