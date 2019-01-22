@@ -11,22 +11,24 @@ This is an example of a Snakemake workflow that:
 
 Snakemake functionality is provided through
 a command line tool called `byok8s`, so that
-ultimately it enables you to do the following:
+it allows you to do this:
 
 ```
-# install minikube
+# install minikube so you can 
+# create a (virtual) k8s cluster
+
 scripts/install_minikube.sh
 
 # move to working directory
 cd test
 
-# deploy k8s
+# deploy (virtual) k8s cluster
 minikube start
 
 # run the workflow
 byok8s -w my-workflowfile -p my-paramsfile
 
-# clean up k8s
+# clean up (virtual) k8s cluster
 minikube stop
 ```
 
@@ -35,20 +37,18 @@ cluster. The approach is for the user to provide
 their own Kubernetes cluster (byok8s = Bring Your
 Own Kubernetes).
 
-Your options for kubernetes clusters:
+The example above uses [`minikube`](https://github.com/kubernetes/minikube)
+to make a virtual k8s cluster, useful for testing.
 
- - Cloud provider:
-    - AWS EKS (Elastic Container Service)
-    - GCP GKE (Google Kuberntes Engine)
-    - Digital Ocean Kubernetes service
-    - etc...
- - Local, virtual Kuberntes cluster using [`minikube`](https://github.com/kubernetes/minikube)
+For real workflow,s your options for
+kubernetes clusters are cloud providers:
 
-All three options are covered in this repository.
+- AWS EKS (Elastic Container Service)
+- GCP GKE (Google Kuberntes Engine)
+- Digital Ocean Kubernetes service
+- etc...
 
-To accomplish testing, this repository runs tests
-on Travis CI using the minikube setup mentioned
-above.
+Travis CI tests utilize minikube.
 
 
 # Quickstart
@@ -64,7 +64,8 @@ Step 3: Run the `byok8s` workflow using the Kubernetes cluster.
 
 Step 4: Tear down Kubernetes cluster with `minikube`.
 
-## Step 1: Set Up Kubernetes Cluster 
+
+## Step 1: Set Up VirtualKubernetes Cluster 
 
 ### Installing Minikube
 
