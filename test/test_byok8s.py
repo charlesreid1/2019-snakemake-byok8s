@@ -28,30 +28,33 @@ class TestByok8s(TestCase):
         """
         set up a byok8s workflow test.
         """
+        # verify that a kubernetes cluster is running
         pass
 
-    def test_hello(self):
-        """
-        test hello workflow
-        """
-        command_prefix = ['byok8s','workflow-zeta']
 
+    def test_alpha(self):
+        """
+        test alpha workflow
+        """
+        workflows = ['workflow-alpha','workflow-gamma','workflow-zeta']
         params = ['params-red','params-blue']
 
         pwd = os.path.abspath(os.path.dirname(__file__))
 
-        for param in params:
-            
-            command = command_prefix + [param]
+        for workflow in workflows:
 
-            p = Popen(command, cwd=pwd, stdout=PIPE, stderr=PIPE).communicate()
-            p_out = p[0].decode('utf-8').strip()
-            p_err = p[1].decode('utf-8').strip()
+            for param in params:
+                
+                command = ['byok8s',workflow,param]
 
-            self.assertIn('details',p_out)
+                p = Popen(command, cwd=pwd, stdout=PIPE, stderr=PIPE).communicate()
+                p_out = p[0].decode('utf-8').strip()
+                p_err = p[1].decode('utf-8').strip()
 
-            # clean up
-            call(['rm','-f','*.txt'])
+                self.assertIn('details',p_out)
+
+                # clean up
+                call(['rm','-f','*.txt'])
 
 
     @classmethod
