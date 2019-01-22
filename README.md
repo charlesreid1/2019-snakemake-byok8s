@@ -17,11 +17,13 @@ ultimately it enables you to do the following:
 # install minikube
 scripts/install_minikube.sh
 
+# move to working directory
+cd test
+
 # deploy k8s
 minikube start
 
 # run the workflow
-cd test
 byok8s -w my-workflowfile -p my-paramsfile
 
 # clean up k8s
@@ -70,27 +72,22 @@ For the purposes of the quickstart, we will walk
 through how to set up a local, virtual Kubernetes
 cluster using `minikube`.
 
-Start by installing minikube.
-
-On Linux:
+Start by installing minikube:
 
 ```
-curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \
-  && sudo install minikube-linux-amd64 /usr/local/bin/minikube
+scripts/install_minicube.sh
 ```
 
-On Mac:
+Once it is installed, you can start up a kubernetes cluster
+with minikube using the following command:
 
 ```
-brew install kubectl
-brew cask install minikube
+minikube start
 ```
-
-Now prepare 
 
 ## Step 2: Install byok8s
 
-Start by setting up a virtual environment,
+Start by setting up a python virtual environment,
 and install the required packages into the
 virtual environment:
 
@@ -135,19 +132,16 @@ cluster that minikube created.
 (NOTE: the command line utility must be run
 from the same directory as the kubernetes 
 cluster was created from, otherwise Snakemake
-won't be able to find the .kube dir, or however
-it finds the kubernetes clsuter.)
+won't be able to find the kubernetes cluster.)
 
 (Would be a good idea to instead specify paths
 for workflow config and param files,
 or have a built-in set of params and configs.)
 
-Run the blue workflow with alpha params, and 
-kubernetes configuration details in kube-deets
-(all json files):
+Run the blue workflow with alpha params:
 
 ```
-byok8s -w example/workflow-blue -p example/params-alpha
+byok8s -w workflow-blue -p params-alpha
 ```
 
 Run the blue workflow with gamma params, and 
@@ -155,18 +149,17 @@ kubernetes configuration details in kube-deets
 (all json files):
 
 ```
-byok8s -w example/workflow-blue -p example/params-gamma
+byok8s -w workflow-blue -p params-gamma
 ```
 
 Run the red workflow with gamma params, &c:
 
 ```
-byok8s -w example/workflow-red -p example/params-gamma
+byok8s -w workflow-red -p params-gamma
 ```
 
-(NOTE: we also need to specify a working directory...
-May want to let the user specify input and output
-directories with flags.)
+(NOTE: May want to let the user specify 
+input and output directories with flags.)
 
 Make reasonable assumptions:
 
