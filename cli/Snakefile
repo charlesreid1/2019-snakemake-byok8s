@@ -2,16 +2,16 @@ name = config['name']
 
 rule rulename1:
      input:
-        "hello.txt"
+        "alpha.txt"
 
 rule target1:
      output:
-        "hello.txt"
+        "alpha.txt"
      shell:
-        "echo hello {name} > {output}"
+        "echo alpha {name} > {output}"
 
 rule target2:
      output:
-        "goodbye.txt"
+        "gamma.txt"
      shell:
-        "echo goodbye {name} > {output}"
+        "echo gamma {name} > {output}"
