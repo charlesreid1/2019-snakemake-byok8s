@@ -1,26 +1,101 @@
-# 2019-snakemake-cli
+# 2019-snakemake-byok8s
 
-[![travis](https://img.shields.io/travis/charlesreid1/2019-snakemake-cli.svg)](https://travis-ci.org/charlesreid1/2019-snakemake-cli.svg)
-[![license](https://img.shields.io/github/license/charlesreid1/2019-snakemake-cli.svg)](https://github.com/charlesreid1/2019-snakemake-cli/blob/master/LICENSE)
+[![travis](https://img.shields.io/travis/charlesreid1/2019-snakemake-byok8s.svg)](https://travis-ci.org/charlesreid1/2019-snakemake-byok8s.svg)
+[![license](https://img.shields.io/github/license/charlesreid1/2019-snakemake-byok8s.svg)](https://github.com/charlesreid1/2019-snakemake-byok8s/blob/master/LICENSE)
 
-An example of a Snakemake command line interface
-bundled up as an installable Python package.
+This is an example of a Snakemake workflow that:
 
-This example bundles the Snakefile with the
-command line tool, but this tool can also look
-in the user's working directory for Snakefiles.
+- is a command line utility
+- is bundled as a Python package
+- is designed to run on a Kubernetes cluster
 
 Snakemake functionality is provided through
-a command line tool called `bananas`.
+a command line tool called `byok8s`, so that
+ultimately it enables you to do the following:
+
+```
+# install minikube
+scripts/install_minikube.sh
+
+# move to working directory
+cd test
+
+# deploy k8s
+minikube start
+
+# run the workflow
+byok8s -w my-workflowfile -p my-paramsfile
+
+# clean up k8s
+minikube stop
+```
+
+Snakemake workflows are run on a Kubernetes (k8s)
+cluster. The approach is for the user to provide
+their own Kubernetes cluster (byok8s = Bring Your
+Own Kubernetes).
+
+Your options for kubernetes clusters:
+
+ - Cloud provider:
+    - AWS EKS (Elastic Container Service)
+    - GCP GKE (Google Kuberntes Engine)
+    - Digital Ocean Kubernetes service
+    - etc...
+ - Local, virtual Kuberntes cluster using [`minikube`](https://github.com/kubernetes/minikube)
+
+All three options are covered in this repository.
+
+To accomplish testing, this repository runs tests
+on Travis CI using the minikube setup mentioned
+above.
+
 
 # Quickstart
 
 This runs through the installation and usage 
-of 2019-snakemake-cli.
+of `2019-snakemake-byok8s`.
 
-## Installing bananas
+Step 1: Set up Kubernetes cluster with `minikube`.
 
-Start by setting up a virtual environment,
+Step 2: Install `byok8s`.
+
+Step 3: Run the `byok8s` workflow using the Kubernetes cluster. 
+
+Step 4: Tear down Kubernetes cluster with `minikube`.
+
+## Step 1: Set Up Kubernetes Cluster 
+
+### Installing Minikube
+
+For the purposes of the quickstart, we will walk
+through how to set up a local, virtual Kubernetes
+cluster using `minikube`.
+
+Start by installing minikube:
+
+```
+scripts/install_minicube.sh
+```
+
+Once it is installed, you can start up a kubernetes cluster
+with minikube using the following command:
+
+```
+minikube start
+```
+
+NOTE: If you are running on AWS, 
+
+```
+minikube config set vm-driver none
+```
+
+to set the the vm driver to none and use native Docker to run stuff.
+
+## Step 2: Install byok8s
+
+Start by setting up a python virtual environment,
 and install the required packages into the
 virtual environment:
 
@@ -28,55 +103,87 @@ virtual environment:
 pip install -r requirements.txt
 ```
 
-Now install the `bananas` command line tool:
+This installs snakemake and kubernetes Python
+modules. Now install the `byok8s` command line
+tool:
 
 ```
 python setup.py build install
 ```
 
-Now you can run
+Now you can run:
 
 ```
-which bananas
+which byok8s
 ```
 
-and you should see `bananas` in your virtual 
+and you should see `byok8s` in your virtual 
 environment's `bin/` directory.
 
-## Running bananas
+This command line utility will expect a kubernetes
+cluster to be set up before it is run. 
 
-Move to the `test/` directory and run the tests
-with the provided config and params files.
+Setting up a kubernetes cluster will create...
+(fill in more info here)...
 
-Run the hello workflow with Amy params:
+Snakemake will automatically create the pods
+in the cluster, so you just need to allocate
+a kubernetes cluster.
+
+
+## Step 3: Run byok8s
+
+Now you can run the workflow with the `byok8s` command.
+This submits the Snakemake workflow jobs to the Kubernetes
+cluster that minikube created.
+
+(NOTE: the command line utility must be run
+from the same directory as the kubernetes 
+cluster was created from, otherwise Snakemake
+won't be able to find the kubernetes cluster.)
+
+(Would be a good idea to instead specify paths
+for workflow config and param files,
+or have a built-in set of params and configs.)
+
+Run the blue workflow with alpha params:
 
 ```
-rm -f hello.txt
-bananas workflow-hello params-amy
+byok8s -w workflow-blue -p params-alpha
 ```
 
-Run the hello workflow with Beth params:
+Run the blue workflow with gamma params, and 
+kubernetes configuration details in kube-deets
+(all json files):
 
 ```
-rm -f hello.txt
-bananas workflow-hello params-beth
+byok8s -w workflow-blue -p params-gamma
 ```
 
-Run the goodbye workflow with Beth params:
+Run the red workflow with gamma params, &c:
 
 ```
-rm -f goodbye.txt
-bananas workflow-goodbye params-beth
+byok8s -w workflow-red -p params-gamma
 ```
 
-# Details
+(NOTE: May want to let the user specify 
+input and output directories with flags.)
 
-The entrypoint of the command line interface is
-the `main()` function of `cli/command.py`.
+Make reasonable assumptions:
 
-The location of the Snakefile is `cli/Snakefile`.
+- if no input dir specified, use cwd
+- if no output dir specified, make one w timestamp and workflow params
+- don't rely on positional args, makes it harder to translate python code/command line calls
 
-An alternative arrangement would be for users
-to provide a Snakefile via rules in the working
-directory, or via a Github URL or a remote URL.
+
+## Step 4: Tear Down Kubernetes Cluster
+
+The last step once the workflow has been finished,
+is to tear down the kubernetes cluster. The virtual
+kubernetes cluster created by minikube can be torn
+down with the following command:
+
+```
+minikube stop
+```
 
