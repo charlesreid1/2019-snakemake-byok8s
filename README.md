@@ -3,6 +3,8 @@
 [![travis](https://img.shields.io/travis/charlesreid1/2019-snakemake-byok8s.svg)](https://travis-ci.org/charlesreid1/2019-snakemake-byok8s)
 [![license](https://img.shields.io/github/license/charlesreid1/2019-snakemake-byok8s.svg)](https://github.com/charlesreid1/2019-snakemake-byok8s/blob/master/LICENSE)
 
+# Overview
+
 This is an example of a Snakemake workflow that:
 
 - is a command line utility
@@ -14,9 +16,8 @@ a command line tool called `byok8s`, so that
 it allows you to do this:
 
 ```
-# install minikube so you can 
-# create a (virtual) k8s cluster
-
+# install minikube so you can create
+# a (virtual) k8s cluster
 scripts/install_minikube.sh
 
 # move to working directory
@@ -48,8 +49,8 @@ kubernetes clusters are cloud providers:
 - Digital Ocean Kubernetes service
 - etc...
 
-Travis CI tests utilize minikube.
-
+The Travis CI tests utilize minikube to run 
+test workflows.
 
 # Quickstart
 
@@ -65,9 +66,9 @@ Step 3: Run the `byok8s` workflow using the Kubernetes cluster.
 Step 4: Tear down Kubernetes cluster with `minikube`.
 
 
-## Step 1: Set Up VirtualKubernetes Cluster 
+## Step 1: Set Up Virtual Kubernetes Cluster 
 
-### Installing Minikube
+### Prerequisite: Installing Minikube
 
 For the purposes of the quickstart, we will walk
 through how to set up a local, virtual Kubernetes
@@ -168,11 +169,8 @@ byok8s -w workflow-gamma -p params-red
 (NOTE: May want to let the user specify 
 input and output directories with flags.)
 
-Make reasonable assumptions:
-
-- if no input dir specified, use cwd
-- if no output dir specified, make one w timestamp and workflow params
-- don't rely on positional args, makes it harder to translate python code/command line calls
+All input files are searched for relative to the working
+directory.
 
 
 ## Step 4: Tear Down Kubernetes Cluster
@@ -185,4 +183,12 @@ down with the following command:
 ```
 minikube stop
 ```
+
+# Using Kubernetes with Cloud Providers
+
+|  Cloud Provider             | Kubernetes Service              | Guide                              |
+|-----------------------------|---------------------------------|------------------------------------|
+| Google Cloud Platform (GCP) | Google Container Engine (GKE)   | [GCP GKE Guide](kubernetes_gcp.md) |
+| Amazon Web Services (AWS)   | Elastic Container Service (EKS) | [AWS EKS Guide](kubernetes_aws.md) |
+| Digital Ocean (DO)          | DO Kubernetes (DOK)             | [DO DOK Guide](kubernetes_dok.md)  |
 

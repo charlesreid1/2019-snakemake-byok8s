@@ -6,40 +6,27 @@ from os.path import isdir, join
 
 
 """
-test banana
+test byok8s
 
-this test will run bananas with the test
-config and params provided in the test dir.
-
-this test will also show how to run tests where
-failure is expected (i.e., checking that we handle
-invalid parameters).
-
-each test has a unittest TestCase defined.
-pytest will automatically find these tests.
+This tests the byok8s command line utility,
+and assumes you have already set up your
+k8s cluster using e.g. minikube.
 """
 
 
-class TestBananas(TestCase):
+class TestByok8s(TestCase):
     """
-    simple bananas test class
+    simple byok8s test class
 
     This uses the subprocess PIPE var
     to capture system input and output,
-    since we are running bananas from the
+    since we are running byok8s from the
     command line directly using subprocess.
     """
     @classmethod
     def setUpClass(self):
         """
-        set up a bananas workflow test.
-
-        we are using the existing test/ dir
-        as our working dir, so no setup to do.
-
-        if we were expecting the user to provide
-        a Snakefile, this is where we would set
-        up a test Snakefile.
+        set up a byok8s workflow test.
         """
         pass
 
@@ -47,9 +34,9 @@ class TestBananas(TestCase):
         """
         test hello workflow
         """
-        command_prefix = ['bananas','workflow-hello']
+        command_prefix = ['byok8s','workflow-zeta']
 
-        params = ['params-amy','params-beth']
+        params = ['params-red','params-blue']
 
         pwd = os.path.abspath(os.path.dirname(__file__))
 
@@ -64,7 +51,7 @@ class TestBananas(TestCase):
             self.assertIn('details',p_out)
 
             # clean up
-            call(['rm','-f','hello.txt'])
+            call(['rm','-f','*.txt'])
 
 
     @classmethod

@@ -15,3 +15,61 @@ rule target2:
         "gamma.txt"
      shell:
         "echo gamma {name} > {output}"
+
+
+# A somewhat contrived workflow:
+#
+#                                       zetaA workflow
+# 
+#             +---- (sleepy process) -- (sleepy process) -- (sleepy process) --+
+#             |                                                                |
+# target3 <---+                                                                +---<----
+#             |                                                                |
+#             +-----------( sleepy process ) ------ ( sleepy process ) --------+
+#
+#                                       zetaB workflow
+
+rule target3:
+    output:
+        "zeta.txt"
+    shell:
+        "cat zetaA.txt zetaB.txt > {output}"
+
+rule target3sleepyA1:
+    output:
+        touch(".zetaA1"),
+        "zetaA.txt"
+    shell:
+        "sleep 3s; echo zeta_A1 {name} > {output[1]}"
+
+rule target3sleepyA2:
+    input:
+        ".zetaA1"
+    output:
+        touch(".zetaA2"),
+        "zetaA.txt"
+    shell:
+        "sleep 3s; echo zeta_A2 {name} >> {output[1]}"
+
+rule target3sleepyA3:
+    input:
+        ".zetaA2"
+    output:
+        touch(".zetaA3"),
+        "zetaA.txt"
+    shell:
+        "sleep 3s; echo zeta_A3 {name} >> {output[1]}"
+
+rule target3sleepyB1:
+    output:
+        touch(".zetaB1"),
+        "zetaB.txt"
+    shell:
+        "sleep 4s; echo zeta_B1 {name} >> {output[1]}"
+
+rule target3sleepyB2:
+    input:
+        ".zetaB1"
+    shell:
+        "sleep 4s: echo zeta_B2 {name} >> {output[1]}"
+
