@@ -7,71 +7,91 @@ import snakemake
 import sys
 import pprint
 import json
+import subprocess
 
 from . import _program
 
 
 thisdir = os.path.abspath(os.path.dirname(__file__))
-parentdir = os.path.join(thisdir,'..')
 cwd = os.getcwd()
 
 def main(sysargs = sys.argv[1:]):
 
-    parser = argparse.ArgumentParser(prog = _program, description='byok8s: run snakemake workflows on your own kubernetes cluster', usage='''byok8s -w <workflow> -p <parameters> [<target>]
+    descr = 'byok8s: run snakemake workflows on your own kubernetes cluster', 
+    usg = '''byok8s -w <workflow> -p <parameters> [<target>]
 
 byok8s: run snakemake workflows on your own kubernetes cluster, using the given workflow name & parameters file.
 
-''')
+'''
+
+    parser = argparse.ArgumentParser(
+            prog = _program, 
+            description=descr,
+            usage = usg
+    )
 
     parser.add_argument('workflowfile')
     parser.add_argument('paramsfile')
 
-    parser.add_argument('-k', '--kubernetes-namespace')
-    parser.add_argument('-n', '--dry-run', action='store_true')
-    parser.add_argument('-f', '--force', action='store_true')
+    parser.add_argument('-s', '--snakefile', default='Snakefile', help='Relative path to Snakemake Snakefile')
+    parser.add_argument('-k', '--kubernetes-namespace', default='default', help='Namespace of Kubernetes cluster')
+    parser.add_argument('-n', '--dry-run', action='store_true', help='Do a dry run of the workflow commands (no commands executed)')
+    parser.add_argument('-f', '--force', action='store_true', help='Force Snakemake rules to be re-run')
     args = parser.parse_args(sysargs)
 
     # first, find the Snakefile
-    snakefile_this      = os.path.join(thisdir,"Snakefile")
-    if os.path.exists(snakefile_this):
-        snakefile = snakefile_this
+    s1 = os.path.join(cwd,args.snakefile)
+    s2 = os.path.join(cwd,'Snakefile')
+    if os.path.isfile(s1):
+        # user has provided a relative path
+        # to a Snakefile. top priority.
+        snakefile = os.path.join(cwd,args.snakefile)
+
+    elif os.path.isfile(s2):
+        # user did not specify a Snakefile,
+        # but we found a file called Snakefile
+        # in the current working directory.
+        snakefile = os.path.join(cwd,'Snakefile')
+
     else:
-        msg = 'Error: cannot find Snakefile at any of the following locations:\n'
-        msg += '{}\n'.format(snakefile_this)
+        msg = ['Error: cannot find Snakefile at any of the following locations:\n']
+        msg += ['{}'.format(j) for j in [s1,s2]]
         sys.stderr.write(msg)
         sys.exit(-1)
 
     # next, find the workflow config file
-    workflowfile = None
     w1 = os.path.join(cwd,args.workflowfile)
     w2 = os.path.join(cwd,args.workflowfile+'.json')
-    # NOTE:
-    # handling yaml would be nice
-    if os.path.exists(w1) and not os.path.isdir(w1):
+    # TODO: yaml
+    if os.path.isfile(w1):
+        # user has provided the full filename
         workflowfile = w1
-    elif os.path.exists(w2) and not os.path.isdir(w2):
+    elif os.path.isfile(w2):
+        # user has provided the prefix of the
+        # json filename
         workflowfile = w2
-
-    if not workflowfile:
-        msg = 'Error: cannot find workflowfile {} or {} '.format(w1,w2)
-        msg += 'in directory {}\n'.format(cwd)
+    else:
+        msg = ['Error: cannot find workflowfile (workflow configuration file) at any of the following locations:\n']
+        msg += ['{}'.format(j) for j in [w1,w2]]
         sys.stderr.write(msg)
         sys.exit(-1)
 
     # next, find the workflow params file
-    paramsfile = None
     p1 = os.path.join(cwd,args.paramsfile)
     p2 = os.path.join(cwd,args.paramsfile+'.json')
-    if os.path.exists(p1) and not os.path.isdir(p1):
+    # TODO: yaml
+    if os.path.isfile(p1):
         paramsfile = p1
-    elif os.path.exists(p2) and not os.path.isdir(p2):
+    elif os.path.isfile(p2):
         paramsfile = p2
-
-    if not paramsfile:
-        msg = 'Error: cannot find paramsfile {} or {} '.format(p1,p2)
-        msg += 'in directory {}\n'.format(cwd)
+    else:
+        msg = ['Error: cannot find paramsfile (workflow parameters file) at any of the following locations:\n']
+        msg += ['{}'.format(j) for j in [p1,p2]]
         sys.stderr.write(msg)
         sys.exit(-1)
+
+    with open(paramsfile,'r') as f:
+        config = json.load(f)
 
     with open(workflowfile, 'rt') as fp:
         workflow_info = json.load(fp)
@@ -82,7 +102,6 @@ byok8s: run snakemake workflows on your own kubernetes cluster, using the given 
         kube_ns = args.kubernetes_namespace
 
     target = workflow_info['workflow_target']
-    config = dict()
 
     print('--------')
     print('details!')
@@ -94,13 +113,18 @@ byok8s: run snakemake workflows on your own kubernetes cluster, using the given 
     print('--------')
 
     # run byok8s!!
-    status = snakemake.snakemake(snakefile, configfile=paramsfile,
+    status = snakemake.snakemake(snakefile, 
+                                 #configfile=paramsfile,
+                                 default_remote_provider='S3',
+                                 default_remote_prefix='cmr-smk-0123',
+                                 assume_shared_fs=False,
+                                 kubernetes_envvars=['AWS_ACCESS_KEY_ID','AWS_SECRET_ACCESS_KEY'],
                                  targets=[target], 
                                  printshellcmds=True,
                                  verbose = True,
                                  dryrun=args.dry_run, 
                                  forceall=args.force,
-                                 #kubernetes=kube_ns,
+                                 kubernetes=kube_ns,
                                  config=config)
 
     if status: # translate "success" into shell exit code of 0
