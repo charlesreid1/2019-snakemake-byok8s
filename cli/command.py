@@ -39,9 +39,9 @@ AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY env vars.
 
     parser.add_argument('-k', '--k8s-namespace',default='default',   help='Namespace of Kubernetes cluster, if not "default"')
     parser.add_argument('-s', '--snakefile',    default='Snakefile', help='Relative path to Snakemake Snakefile, if not "Snakefile"')
+    parser.add_argument('-b', '--s3-bucket',                         help='Name of S3 bucket to use for Snakemake file I/O (REQUIRED)')
     parser.add_argument('-n', '--dry-run',      action='store_true', help='Do a dry run of the workflow commands (no commands executed)')
     parser.add_argument('-f', '--force',        action='store_true', help='Force Snakemake rules to be re-run')
-    parser.add_argument('-b', '--s3-bucket',    action='store_true', help='Name of S3 bucket to use for Snakemake file I/O (REQUIRED)')
     # NOTE: You MUST use S3 buckets, GCS buckets are not supported.
     # That's because GCP requires credentials to be stored in a file,
     # and we can only pass environment variables into k8s containers.
