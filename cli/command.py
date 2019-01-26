@@ -17,10 +17,14 @@ cwd = os.getcwd()
 
 def main(sysargs = sys.argv[1:]):
 
-    descr = 'byok8s: run snakemake workflows on your own kubernetes cluster', 
-    usg = '''byok8s -w <workflow> -p <parameters> [<target>]
+    descr = ''
+    usg = '''byok8s [--FLAGS] <workflowfile> <paramsfile> [<target>]
 
-byok8s: run snakemake workflows on your own kubernetes cluster, using the given workflow name & parameters file.
+byok8s: run snakemake workflows on your own kubernetes 
+cluster, using the given workflow name & parameters file.
+
+byok8s requires an S3 bucket be used for file I/O. Set
+AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY env vars.
 
 '''
 
@@ -33,33 +37,30 @@ byok8s: run snakemake workflows on your own kubernetes cluster, using the given 
     parser.add_argument('workflowfile')
     parser.add_argument('paramsfile')
 
-    parser.add_argument('-s', '--snakefile', default='Snakefile', help='Relative path to Snakemake Snakefile')
-    parser.add_argument('-k', '--kubernetes-namespace', default='default', help='Namespace of Kubernetes cluster')
-    parser.add_argument('-n', '--dry-run', action='store_true', help='Do a dry run of the workflow commands (no commands executed)')
-    parser.add_argument('-f', '--force', action='store_true', help='Force Snakemake rules to be re-run')
+    parser.add_argument('-k', '--k8s-namespace',default='default',   help='Namespace of Kubernetes cluster, if not "default"')
+    parser.add_argument('-s', '--snakefile',    default='Snakefile', help='Relative path to Snakemake Snakefile, if not "Snakefile"')
+    parser.add_argument('-n', '--dry-run',      action='store_true', help='Do a dry run of the workflow commands (no commands executed)')
+    parser.add_argument('-f', '--force',        action='store_true', help='Force Snakemake rules to be re-run')
+    parser.add_argument('-b', '--s3-bucket',    action='store_true', help='Name of S3 bucket to use for Snakemake file I/O (REQUIRED)')
+    # NOTE: You MUST use S3 buckets, GCS buckets are not supported.
+    # That's because GCP requires credentials to be stored in a file,
+    # and we can only pass environment variables into k8s containers.
+
     args = parser.parse_args(sysargs)
 
-    # first, find the Snakefile
+    # find the Snakefile
     s1 = os.path.join(cwd,args.snakefile)
-    s2 = os.path.join(cwd,'Snakefile')
     if os.path.isfile(s1):
         # user has provided a relative path
         # to a Snakefile. top priority.
         snakefile = os.path.join(cwd,args.snakefile)
 
-    elif os.path.isfile(s2):
-        # user did not specify a Snakefile,
-        # but we found a file called Snakefile
-        # in the current working directory.
-        snakefile = os.path.join(cwd,'Snakefile')
-
     else:
-        msg = ['Error: cannot find Snakefile at any of the following locations:\n']
-        msg += ['{}'.format(j) for j in [s1,s2]]
+        msg = 'Error: cannot find Snakefile at {}\n'.format(s1)
         sys.stderr.write(msg)
         sys.exit(-1)
 
-    # next, find the workflow config file
+    # find the workflow config file
     w1 = os.path.join(cwd,args.workflowfile)
     w2 = os.path.join(cwd,args.workflowfile+'.json')
     # TODO: yaml
@@ -76,7 +77,7 @@ byok8s: run snakemake workflows on your own kubernetes cluster, using the given 
         sys.stderr.write(msg)
         sys.exit(-1)
 
-    # next, find the workflow params file
+    # find the workflow params file
     p1 = os.path.join(cwd,args.paramsfile)
     p2 = os.path.join(cwd,args.paramsfile+'.json')
     # TODO: yaml
@@ -93,13 +94,28 @@ byok8s: run snakemake workflows on your own kubernetes cluster, using the given 
     with open(paramsfile,'r') as f:
         config = json.load(f)
 
-    with open(workflowfile, 'rt') as fp:
+    with open(workflowfile, 'r') as fp:
         workflow_info = json.load(fp)
 
     # get the kubernetes namespace
     kube_ns = 'default'
-    if args.kubernetes_namespace is not None and len(args.kubernetes_namespace)>0:
-        kube_ns = args.kubernetes_namespace
+    if args.k8s_namespace is not None and len(args.k8s_namespace)>0:
+        kube_ns = args.k8s_namespace
+
+    # verify the user has set the AWS env variables
+    if not (os.environ['AWS_ACCESS_KEY_ID'] and os.environ['AWS_SECRET_ACCESS_KEY']):
+        msg = 'Error: the environment variables AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY must be set to allow the k8s cluster to access an S3 bucket for i/o.'
+        sys.stderr.write(msg)
+        sys.exit(-1)
+
+    # verify the user has provided a bucket name
+    if not args.s3_bucket:
+        msg = 'Error: no S3 bucket specified with --s3-bucket. This must be set to allow the k8s cluster to access an S3 bucket for i/o.'
+        sys.stderr.write(msg)
+        sys.exit(-1)
+    else:
+        mah_bukkit = args.s3_bucket
+
 
     target = workflow_info['workflow_target']
 
@@ -112,14 +128,16 @@ byok8s: run snakemake workflows on your own kubernetes cluster, using the given 
     print('\tk8s namespace: {}'.format(kube_ns))
     print('--------')
 
+    # Note: we comment out configfile=paramsfile below,
+    # because we have problems passing files into k8s clusters.
+
     # run byok8s!!
     status = snakemake.snakemake(snakefile, 
                                  #configfile=paramsfile,
                                  assume_shared_fs=False,
-                                 default_remote_provider='S3Mocked',
-                                 #default_remote_provider='S3',
-                                 #default_remote_prefix='cmr-smk-0123',
-                                 #kubernetes_envvars=['AWS_ACCESS_KEY_ID','AWS_SECRET_ACCESS_KEY'],
+                                 default_remote_provider='S3',
+                                 default_remote_prefix=mah_bukkit,
+                                 kubernetes_envvars=['AWS_ACCESS_KEY_ID','AWS_SECRET_ACCESS_KEY'],
                                  targets=[target], 
                                  printshellcmds=True,
                                  verbose = True,
