@@ -204,9 +204,10 @@ minikube stop
 
 # Using Kubernetes with Cloud Providers
 
-|  Cloud Provider             | Kubernetes Service              | Guide                              |
-|-----------------------------|---------------------------------|------------------------------------|
-| Google Cloud Platform (GCP) | Google Container Engine (GKE)   | [GCP GKE Guide](kubernetes_gcp.md) |
-| Amazon Web Services (AWS)   | Elastic Container Service (EKS) | [AWS EKS Guide](kubernetes_aws.md) |
-| Digital Ocean (DO)          | DO Kubernetes (DOK)             | [DO DOK Guide](kubernetes_dok.md)  |
+|  Cloud Provider             | Kubernetes Service              | Guide                                        |
+|-----------------------------|---------------------------------|----------------------------------------------|
+| Minikube (on AWS EC2)       | Minikube                        | [Minikube AWS Guide](kubernetes_minikube.md) |
+| Google Cloud Platform (GCP) | Google Container Engine (GKE)   | [GCP GKE Guide](kubernetes_gcp.md)           | 
+| Amazon Web Services (AWS)   | Elastic Container Service (EKS) | [AWS EKS Guide](kubernetes_aws.md)           | 
+| Digital Ocean (DO)          | DO Kubernetes (DOK)             | [DO DOK Guide](kubernetes_dok.md)            | 
 
