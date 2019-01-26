@@ -13,27 +13,21 @@ This is an example of a Snakemake workflow that:
 
 Snakemake functionality is provided through
 a command line tool called `byok8s`, so that
-it allows you to do this:
+it allows you to do this (abbreviated for clarity):
 
 ```
-# install minikube so you can create
-# a (virtual) k8s cluster
-scripts/install_minikube.sh
-
-# move to working directory
-cd test
-
-# deploy (virtual) k8s cluster
+# Create virtual k8s cluster
 minikube start
 
-# run the workflow
-byok8s -w my-workflowfile -p my-paramsfile
+# Run the workflow
+byok8s --s3-bucket mah-s3-bukkit my-workflowfile my-paramsfile
 
-# clean up (virtual) k8s cluster
+# Clean up the virtual k8s cluster
 minikube stop
 ```
 
-Snakemake workflows are run on a Kubernetes (k8s)
+Snakemake workflows are provided via a Snakefile by
+the user. Snakemake runs tasks on the Kubernetes (k8s)
 cluster. The approach is for the user to provide
 their own Kubernetes cluster (byok8s = Bring Your
 Own Kubernetes).
@@ -81,19 +75,31 @@ scripts/install_minicube.sh
 ```
 
 Once it is installed, you can start up a kubernetes cluster
-with minikube using the following command:
+with minikube using the following commands:
 
 ```
+cd test
 minikube start
 ```
 
-NOTE: If you are running on AWS, 
+NOTE: If you are running on AWS, run this command first
 
 ```
 minikube config set vm-driver none
 ```
 
 to set the the vm driver to none and use native Docker to run stuff.
+
+If you are running on AWS, the DNS in the minikube
+kubernetes cluster will not work, so run this command
+to fix the DNS settings (should be run from the
+`test/` directory):
+
+```
+kubectl apply -f fixcoredns.yml
+kubectl delete --all pods --namespace kube-system
+```
+
 
 ## Step 2: Install byok8s
 
@@ -139,31 +145,43 @@ Now you can run the workflow with the `byok8s` command.
 This submits the Snakemake workflow jobs to the Kubernetes
 cluster that minikube created.
 
-(NOTE: the command line utility must be run
-from the same directory as the kubernetes 
-cluster was created from, otherwise Snakemake
-won't be able to find the kubernetes cluster.)
+You should have your workflow in a `Snakefile` in the
+current directory. Use the `--snakefile` flag if it is
+named something other than `Snakefile`.
 
-(Would be a good idea to instead specify paths
-for workflow config and param files,
-or have a built-in set of params and configs.)
+You will also need to specify your AWS credentials
+via the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`
+environment variables. These are used to to access
+S3 buckets for file I/O.
+
+Finally, you will need to create an S3 bucket for
+Snakemake to use for file I/O. Pass the name of the
+bucket using the `--s3-bucket` flag.
+
+Start by exporting these two vars (careful to
+scrub them from bash history):
+
+```
+ export AWS_ACCESS_KEY_ID=XXXXX
+ export AWS_SECRET_ACCESS_KEY=XXXXX
+```
 
 Run the alpha workflow with blue params:
 
 ```
-byok8s -w workflow-alpha -p params-blue
+byok8s --s3-bucket=mah-bukkit workflow-alpha params-blue
 ```
 
 Run the alpha workflow with red params:
 
 ```
-byok8s -w workflow-alpha -p params-red
+byok8s --s3-bucket=mah-bukkit workflow-alpha params-red
 ```
 
 Run the gamma workflow with red params, &c:
 
 ```
-byok8s -w workflow-gamma -p params-red
+byok8s --s3-bucket=mah-bukkit workflow-gamma params-red
 ```
 
 (NOTE: May want to let the user specify 
