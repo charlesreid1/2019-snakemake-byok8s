@@ -1,18 +1,16 @@
 # 2019-snakemake-byok8s tests
 
-Assuming you have minikube installed (see `scripts/` directory if you don't)...
+This guide assumes you have minikube installed. (See `../scripts/` directory...)
 
-Start a cluster:
+We will need to fix a problem with a DNS setting in Kubernetes if we are on
+an AWS EC2 node, so we'll walk through how to do that first.
 
-```
-minikube start
+Then we'll cover how to start a Kubernetes cluster and run a simple test.
 
-# or, if on ec2,
 
-sudo minikube start
-```
+## Fix k8s DNS problem
 
-Now, if you are running on EC2, you will have
+If you are running on EC2, you will have
 to fix the DNS settings inside the container
 by patching the `kube-dns` container that
 runs as part of Kubernetes.
@@ -20,7 +18,24 @@ runs as part of Kubernetes.
 Apply the DNS fix to the container,
 
 ```
-kubernetes apply -f fixdns.yml
+kubernetes apply -f fixcoredns.yml
+```
+
+(If you are using an older version of minikube + kubernetes
+that uses kube-dns, use `fixkubedns.yml` instead.)
+
+
+## Start (restart) cluster
+
+If you don't already have a Kubernetes cluster running,
+start one with minikube:
+
+```
+minikube start
+
+# or, if on ec2,
+
+sudo minikube start
 ```
 
 If you have a Kubernetes pod currently running,
@@ -31,4 +46,15 @@ they will automatically respawn, including the
 ```
 kubernetes delete --all pods --namespace kube-system
 ```
+
+
+## Running tests
+
+Now that DNS is fixed, the host and container can
+properly communicate, which is required for Kubernetes
+to return files it has created.
+
+
+
+
 

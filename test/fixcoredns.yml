@@ -1,0 +1,22 @@
+kind: ConfigMap
+apiVersion: v1
+data:
+  Corefile: |
+    .:53 {
+        errors
+        health
+        kubernetes cluster.local in-addr.arpa ip6.arpa {
+           upstream 8.8.8.8 8.8.4.4
+           pods insecure
+           fallthrough in-addr.arpa ip6.arpa
+        }
+        proxy .  8.8.8.8 8.8.4.4
+        cache 30
+        reload
+    }
+metadata:
+  creationTimestamp: 2019-01-25T22:55:15Z
+  name: coredns
+  namespace: kube-system
+  #resourceVersion: "198"
+  #selfLink: /api/v1/namespaces/kube-system/configmaps/coredns
