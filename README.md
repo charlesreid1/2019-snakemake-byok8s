@@ -10,6 +10,7 @@ This is an example of a Snakemake workflow that:
 - is a command line utility
 - is bundled as a Python package
 - is designed to run on a Kubernetes cluster
+- can be tested locally or with Travis CI using minikube
 
 Snakemake functionality is provided through
 a command line tool called `byok8s`, so that
@@ -20,7 +21,7 @@ it allows you to do this (abbreviated for clarity):
 minikube start
 
 # Run the workflow
-byok8s --s3-bucket mah-s3-bukkit my-workflowfile my-paramsfile
+byok8s --s3-bucket=mah-s3-bukkit my-workflowfile my-paramsfile
 
 # Clean up the virtual k8s cluster
 minikube stop
@@ -35,7 +36,7 @@ Own Kubernetes).
 The example above uses [`minikube`](https://github.com/kubernetes/minikube)
 to make a virtual k8s cluster, useful for testing.
 
-For real workflow,s your options for
+For real workflows, your options for
 kubernetes clusters are cloud providers:
 
 - AWS EKS (Elastic Container Service)
@@ -62,8 +63,6 @@ Step 4: Tear down Kubernetes cluster with `minikube`.
 
 ## Step 1: Set Up Virtual Kubernetes Cluster 
 
-### Prerequisite: Installing Minikube
-
 For the purposes of the quickstart, we will walk
 through how to set up a local, virtual Kubernetes
 cluster using `minikube`.
@@ -71,7 +70,7 @@ cluster using `minikube`.
 Start by installing minikube:
 
 ```
-scripts/install_minicube.sh
+scripts/install_minikube.sh
 ```
 
 Once it is installed, you can start up a kubernetes cluster
