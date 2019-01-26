@@ -51,4 +51,3 @@ script:
 ################ 
 ## harder
 - byok8s --s3-bucket=cmr-0123 -f workflow-alpha params-blue
-
