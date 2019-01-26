@@ -1,0 +1,93 @@
+name = config['name']
+
+rule rulename1:
+     input:
+        "alpha.txt"
+
+rule target1:
+     output:
+        "alpha.txt"
+     shell:
+        "echo alpha {name} > {output}"
+
+rule target2:
+     output:
+        "gamma.txt"
+     shell:
+        "echo gamma {name} > {output}"
+
+
+# A somewhat contrived workflow:
+#
+#                                       zetaA workflow
+# 
+#             +---- (sleepy process) -- (sleepy process) -- (sleepy process) --+
+#             |                                                                |
+# target3 <---+                                                                +---<----
+#             |                                                                |
+#             +-----------( sleepy process ) ------ ( sleepy process ) --------+
+#
+#                                       zetaB workflow
+
+rule target3:
+    input:
+        "zetaA.txt", "zetaB.txt"
+    output:
+        "zeta.txt"
+    shell:
+        "cat {input[0]} {input[1]} > {output}"
+
+rule target3sleepyA1:
+    output:
+        touch(".zetaA1")
+    shell:
+        """
+        sleep 3s
+        echo zeta_A1 {name} > zetaA.txt
+        """
+
+rule target3sleepyA2:
+    input:
+        ".zetaA1"
+    output:
+        touch(".zetaA2")
+    shell:
+        """
+        sleep 3s
+        echo zeta_A2 {name} >> zetaA.txt
+        rm -f .zetaA1
+        """
+
+rule target3sleepyA3:
+    input:
+        ".zetaA2"
+    output:
+        "zetaA.txt"
+    shell:
+        """
+        sleep 3s
+        echo zeta_A3 {name} >> {output}
+        rm -f .zetaA2
+        """
+
+rule target3sleepyB1:
+    output:
+        touch(".zetaB1")
+    shell:
+        """
+        sleep 4s
+        echo zeta_B1 {name} > zetaB.txt
+        """
+
+rule target3sleepyB2:
+    input:
+        ".zetaB1"
+    output:
+        "zetaB.txt"
+    shell:
+        """
+        sleep 4s
+        echo zeta_B2 {name} >> {output}
+        rm -f .zetaB1
+        """
+
