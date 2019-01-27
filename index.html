@@ -113,7 +113,7 @@
       <div class="md-flex__cell md-flex__cell--shrink">
         <a href="https://charlesreid1.github.io/2019-snakemake-byok8s" title="2019-snakemake-byok8s" class="md-header-nav__button md-logo">
           
-            <i class="md-icon">dns</i>
+            <img src="images/ship.svg" width="24" height="24">
           
         </a>
       </div>
@@ -202,7 +202,7 @@
   <label class="md-nav__title md-nav__title--site" for="__drawer">
     <a href="https://charlesreid1.github.io/2019-snakemake-byok8s" title="2019-snakemake-byok8s" class="md-nav__button md-logo">
       
-        <i class="md-icon">dns</i>
+        <img src="images/ship.svg" width="48" height="48">
       
     </a>
     2019-snakemake-byok8s
@@ -244,6 +244,18 @@
       Index
     </a>
     
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="quickstart/" title="Quickstart" class="md-nav__link">
+      Quickstart
+    </a>
   </li>
 
     
@@ -295,6 +307,18 @@
   </li>
 
     
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="travis_tests/" title="Travis Tests" class="md-nav__link">
+      Travis Tests
+    </a>
+  </li>
+
+    
   </ul>
 </nav>
                   </div>
@@ -329,146 +353,77 @@
 <h1 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h1>
 <p>This is an example of a Snakemake workflow that:</p>
 <ul>
-<li>is a command line utility</li>
-<li>is bundled as a Python package</li>
-<li>is designed to run on a Kubernetes cluster</li>
-<li>can be tested locally or with Travis CI using minikube</li>
+<li>is a <strong>command line utility</strong> called <code>byok8s</code></li>
+<li>is bundled as an installable <strong>Python package</strong></li>
+<li>is designed to run on a <strong>Kubernetes (k8s) cluster</strong></li>
+<li>can be <strong>tested with Travis CI</strong> (and/or locally) using <a href="https://github.com/kubernetes/minikube">minikube</a></li>
 </ul>
+<h2 id="how-is-byok8s-invoked">How is byok8s invoked?<a class="headerlink" href="#how-is-byok8s-invoked" title="Permanent link">&para;</a></h2>
 <p>Snakemake functionality is provided through
 a command line tool called <code>byok8s</code>, so that
-it allows you to do this (abbreviated for clarity):</p>
-<pre class="codehilite"><code># Create virtual k8s cluster
+it allows you to do this (also see the 
+<a href="quickstart/">Quickstart Guide</a>).</p>
+<pre class="codehilite"><code># Install byok8s
+python setup.py build install
+
+# Create virtual k8s cluster
 minikube start
 
-# Run the workflow
-byok8s --s3-bucket=mah-s3-bukkit my-workflowfile my-paramsfile
+# Run the workflow on the k8s cluster
+cd /path/to/workflow/
+byok8s my-workflowfile my-paramsfile --s3-bucket=my-bucket
 
 # Clean up the virtual k8s cluster
 minikube stop</code></pre>
 
 
-<p>Snakemake workflows are provided via a Snakefile by
-the user. Snakemake runs tasks on the Kubernetes (k8s)
-cluster. The approach is for the user to provide
-their own Kubernetes cluster (byok8s = Bring Your
-Own Kubernetes).</p>
-<p>The example above uses <a href="https://github.com/kubernetes/minikube"><code>minikube</code></a>
-to make a virtual k8s cluster, useful for testing.</p>
+<h2 id="how-does-byok8s-work">How does byok8s work?<a class="headerlink" href="#how-does-byok8s-work" title="Permanent link">&para;</a></h2>
+<p>The command line utility requires the user to provide three inputs:</p>
+<ul>
+<li>A snakemake workflow, via a <code>Snakefile</code></li>
+<li>A workflow configuration file (JSON)</li>
+<li>A workflow parameters file (JSON)</li>
+</ul>
+<p>Additionally, the user must have a Kubernetes cluster running.
+(The approach is for the user to bring their own Kubernetes cluster
+to the table - hence byok8s = Bring Your Own Kubernetes).</p>
+<p>The workflow config file specifies which workflow targets
+and input files to use.</p>
+<p>The workflow parameters file specifies which parameters to
+use for the workflow steps.</p>
+<h2 id="why-s3-buckets">Why S3 Buckets?<a class="headerlink" href="#why-s3-buckets" title="Permanent link">&para;</a></h2>
+<p>AWS credentials and an S3 bucket is required to run workflows because 
+of restrictions on file I/O on nodes in a kubernes cluster. The Snakemake
+workflows use AWS S3 buckets as remote providers for the Kubernetes nodes,
+but this can be modified to any others that Snakemake supports.</p>
+<p>AWS credentials are set with the two environment variables:</p>
+<pre class="codehilite"><code>AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY</code></pre>
+
+
+<p>These are passed into the Kubernetes cluster by byok8s and Snakemake.</p>
+<h2 id="kubernetes-and-minikube">Kubernetes and Minikube<a class="headerlink" href="#kubernetes-and-minikube" title="Permanent link">&para;</a></h2>
+<p><a href="https://kubernetes.io/">Kubernetes</a> is a technology that utilizes Docker
+container to orchestrate a cluster of compute nodes. These compute nodes are
+usually real compute nodes requested and managed via a cloud provider, like AWS
+or Google Cloud.</p>
+<p>But the compute nodes can also be virtual, which is where
+<a href="https://github.com/kubernetes/minikube">minikube</a> comes in.  It creates a
+kubernetes cluster that is entirely local and virtual, which makes testing
+easy. See the <a href="kubernetes_minikube/">byok8s Minikube Guide</a> for details
+about how to use minikube with byok8s.</p>
+<p>The Travis CI tests also utilize minikube to run test workflows. See <a href="travis_tests/">byok8s
+Travis Tests</a> for more information.</p>
+<h2 id="cloud-providers">Cloud Providers<a class="headerlink" href="#cloud-providers" title="Permanent link">&para;</a></h2>
 <p>For real workflows, your options for
-kubernetes clusters are cloud providers:</p>
+kubernetes clusters are cloud providers.
+We have guides for the following:</p>
 <ul>
 <li>AWS EKS (Elastic Container Service)</li>
 <li>GCP GKE (Google Kuberntes Engine)</li>
 <li>Digital Ocean Kubernetes service</li>
-<li>etc...</li>
 </ul>
-<p>The Travis CI tests utilize minikube to run 
-test workflows.</p>
-<h1 id="quickstart">Quickstart<a class="headerlink" href="#quickstart" title="Permanent link">&para;</a></h1>
-<p>This runs through the installation and usage 
-of <code>2019-snakemake-byok8s</code>.</p>
-<p>Step 1: Set up Kubernetes cluster with <code>minikube</code>.</p>
-<p>Step 2: Install <code>byok8s</code>.</p>
-<p>Step 3: Run the <code>byok8s</code> workflow using the Kubernetes cluster. </p>
-<p>Step 4: Tear down Kubernetes cluster with <code>minikube</code>.</p>
-<h2 id="step-1-set-up-virtual-kubernetes-cluster">Step 1: Set Up Virtual Kubernetes Cluster<a class="headerlink" href="#step-1-set-up-virtual-kubernetes-cluster" title="Permanent link">&para;</a></h2>
-<p>For the purposes of the quickstart, we will walk
-through how to set up a local, virtual Kubernetes
-cluster using <code>minikube</code>.</p>
-<p>Start by installing minikube:</p>
-<pre class="codehilite"><code>scripts/install_minikube.sh</code></pre>
-
-
-<p>Once it is installed, you can start up a kubernetes cluster
-with minikube using the following commands:</p>
-<pre class="codehilite"><code>cd test
-minikube start</code></pre>
-
-
-<p>NOTE: If you are running on AWS, run this command first</p>
-<pre class="codehilite"><code>minikube config set vm-driver none</code></pre>
-
-
-<p>to set the the vm driver to none and use native Docker to run stuff.</p>
-<p>If you are running on AWS, the DNS in the minikube
-kubernetes cluster will not work, so run this command
-to fix the DNS settings (should be run from the
-<code>test/</code> directory):</p>
-<pre class="codehilite"><code>kubectl apply -f fixcoredns.yml
-kubectl delete --all pods --namespace kube-system</code></pre>
-
-
-<h2 id="step-2-install-byok8s">Step 2: Install byok8s<a class="headerlink" href="#step-2-install-byok8s" title="Permanent link">&para;</a></h2>
-<p>Start by setting up a python virtual environment,
-and install the required packages into the
-virtual environment:</p>
-<pre class="codehilite"><code>pip install -r requirements.txt</code></pre>
-
-
-<p>This installs snakemake and kubernetes Python
-modules. Now install the <code>byok8s</code> command line
-tool:</p>
-<pre class="codehilite"><code>python setup.py build install</code></pre>
-
-
-<p>Now you can run:</p>
-<pre class="codehilite"><code>which byok8s</code></pre>
-
-
-<p>and you should see <code>byok8s</code> in your virtual 
-environment's <code>bin/</code> directory.</p>
-<p>This command line utility will expect a kubernetes
-cluster to be set up before it is run. </p>
-<p>Setting up a kubernetes cluster will create...
-(fill in more info here)...</p>
-<p>Snakemake will automatically create the pods
-in the cluster, so you just need to allocate
-a kubernetes cluster.</p>
-<h2 id="step-3-run-byok8s">Step 3: Run byok8s<a class="headerlink" href="#step-3-run-byok8s" title="Permanent link">&para;</a></h2>
-<p>Now you can run the workflow with the <code>byok8s</code> command.
-This submits the Snakemake workflow jobs to the Kubernetes
-cluster that minikube created.</p>
-<p>You should have your workflow in a <code>Snakefile</code> in the
-current directory. Use the <code>--snakefile</code> flag if it is
-named something other than <code>Snakefile</code>.</p>
-<p>You will also need to specify your AWS credentials
-via the <code>AWS_ACCESS_KEY_ID</code> and <code>AWS_SECRET_ACCESS_KEY</code>
-environment variables. These are used to to access
-S3 buckets for file I/O.</p>
-<p>Finally, you will need to create an S3 bucket for
-Snakemake to use for file I/O. Pass the name of the
-bucket using the <code>--s3-bucket</code> flag.</p>
-<p>Start by exporting these two vars (careful to
-scrub them from bash history):</p>
-<pre class="codehilite"><code>export AWS_ACCESS_KEY_ID=XXXXX
-export AWS_SECRET_ACCESS_KEY=XXXXX</code></pre>
-
-
-<p>Run the alpha workflow with blue params:</p>
-<pre class="codehilite"><code>byok8s --s3-bucket=mah-bukkit workflow-alpha params-blue</code></pre>
-
-
-<p>Run the alpha workflow with red params:</p>
-<pre class="codehilite"><code>byok8s --s3-bucket=mah-bukkit workflow-alpha params-red</code></pre>
-
-
-<p>Run the gamma workflow with red params, &amp;c:</p>
-<pre class="codehilite"><code>byok8s --s3-bucket=mah-bukkit workflow-gamma params-red</code></pre>
-
-
-<p>(NOTE: May want to let the user specify 
-input and output directories with flags.)</p>
-<p>All input files are searched for relative to the working
-directory.</p>
-<h2 id="step-4-tear-down-kubernetes-cluster">Step 4: Tear Down Kubernetes Cluster<a class="headerlink" href="#step-4-tear-down-kubernetes-cluster" title="Permanent link">&para;</a></h2>
-<p>The last step once the workflow has been finished,
-is to tear down the kubernetes cluster. The virtual
-kubernetes cluster created by minikube can be torn
-down with the following command:</p>
-<pre class="codehilite"><code>minikube stop</code></pre>
-
-
-<h1 id="using-kubernetes-with-cloud-providers">Using Kubernetes with Cloud Providers<a class="headerlink" href="#using-kubernetes-with-cloud-providers" title="Permanent link">&para;</a></h1>
+<h1 id="kubernetes-byok8s-in-practice">Kubernetes + byok8s: In Practice<a class="headerlink" href="#kubernetes-byok8s-in-practice" title="Permanent link">&para;</a></h1>
 <table>
 <thead>
 <tr>
@@ -481,22 +436,22 @@ down with the following command:</p>
 <tr>
 <td>Minikube (on AWS EC2)</td>
 <td>Minikube</td>
-<td><a href="kubernetes_minikube/">Minikube AWS Guide</a></td>
+<td><a href="kubernetes_minikube/">byok8s Minikube Guide</a></td>
 </tr>
 <tr>
 <td>Google Cloud Platform (GCP)</td>
 <td>Google Container Engine (GKE)</td>
-<td><a href="kubernetes_gcp/">GCP GKE Guide</a></td>
+<td><a href="kubernetes_gcp/">byok8s GCP GKE Guide</a></td>
 </tr>
 <tr>
 <td>Amazon Web Services (AWS)</td>
 <td>Elastic Container Service (EKS)</td>
-<td><a href="kubernetes_aws/">AWS EKS Guide</a></td>
+<td><a href="kubernetes_aws/">byok8s AWS EKS Guide</a></td>
 </tr>
 <tr>
 <td>Digital Ocean (DO)</td>
 <td>DO Kubernetes (DOK)</td>
-<td><a href="kubernetes_dok/">DO DOK Guide</a></td>
+<td><a href="kubernetes_dok/">byok8s DO DOK Guide</a></td>
 </tr>
 </tbody>
 </table>
@@ -522,13 +477,13 @@ down with the following command:</p>
       <nav class="md-footer-nav__inner md-grid">
         
         
-          <a href="kubernetes_minikube/" title="K8s with Minikube" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="quickstart/" title="Quickstart" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                K8s with Minikube
+                Quickstart
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
@@ -544,7 +499,7 @@ down with the following command:</p>
       <div class="md-footer-copyright">
         
           <div class="md-footer-copyright__highlight">
-            Copyright &copy; 2018 <a href="https://charlesreid1.com">Charles Reid</a>, released under the <a href="https://opensource.org/licenses/MIT">MIT license</a>
+            Copyright &copy; 2018 <a href="https://charlesreid1.com">Charles Reid</a>, released under the <a href="https://opensource.org/licenses/MIT">MIT license</a> <br /><br /> <div>Icon made by Freepik, obtained from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>, used under a <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div> license.
           </div>
         
         powered by

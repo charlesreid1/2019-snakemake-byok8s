@@ -6,6 +6,11 @@
      <changefreq>daily</changefreq>
     </url>
     <url>
+     <loc>https://charlesreid1.github.io/2019-snakemake-byok8s/quickstart/</loc>
+     <lastmod>2019-01-26</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
      <loc>https://charlesreid1.github.io/2019-snakemake-byok8s/kubernetes_minikube/</loc>
      <lastmod>2019-01-26</lastmod>
      <changefreq>daily</changefreq>
@@ -22,6 +27,11 @@
     </url>
     <url>
      <loc>https://charlesreid1.github.io/2019-snakemake-byok8s/kubernetes_dok/</loc>
+     <lastmod>2019-01-26</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://charlesreid1.github.io/2019-snakemake-byok8s/travis_tests/</loc>
      <lastmod>2019-01-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
