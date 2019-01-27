@@ -34,6 +34,11 @@ byok8s my-workflowfile my-paramsfile --s3-bucket=my-bucket
 minikube stop
 ```
 
+## Getting Up and Running
+
+See the [Quickstart Guide](quickstart.md) to get up and running with 
+byok8s on an AWS node.
+
 ## How does byok8s work?
 
 The command line utility requires the user to provide three inputs:
