@@ -11,7 +11,7 @@
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       
       
-        <link rel="canonical" href="https://charlesreid1.github.io/2019-snakemake-byok8s/">
+        <link rel="canonical" href="https://charlesreid1.github.io/2019-snakemake-byok8s/kubernetes_gcp/">
       
       
       
@@ -33,18 +33,18 @@
       
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
-      <link rel="shortcut icon" href=".">
+      <link rel="shortcut icon" href="..">
       <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-3.0.3">
     
     
       
-        <title>2019-snakemake-byok8s</title>
+        <title>K8s with GCP - 2019-snakemake-byok8s</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/application.451f80e5.css">
+      <link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
       
-        <link rel="stylesheet" href="assets/stylesheets/application-palette.22915126.css">
+        <link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
       
       
         
@@ -53,7 +53,7 @@
       
     
     
-      <script src="assets/javascripts/modernizr.1aa3b519.js"></script>
+      <script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
     
     
       <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
@@ -62,9 +62,9 @@
         <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
       
     
-    <link rel="stylesheet" href="assets/fonts/material-icons.css">
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
     
-      <link rel="stylesheet" href="css/custom.css">
+      <link rel="stylesheet" href="../css/custom.css">
     
     
   </head>
@@ -102,7 +102,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#2019-snakemake-byok8s" tabindex="1" class="md-skip">
+      <a href="../#kubernetes-on-google-cloud-platform" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -128,7 +128,7 @@
                 2019-snakemake-byok8s
               </span>
               <span class="md-header-nav__topic">
-                Index
+                K8s with GCP
               </span>
             
           
@@ -230,20 +230,11 @@
       
       
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-      
-    
-    
-    <a href="." title="Index" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href=".." title="Index" class="md-nav__link">
       Index
     </a>
-    
   </li>
 
     
@@ -253,7 +244,7 @@
 
 
   <li class="md-nav__item">
-    <a href="kubernetes_minikube/" title="K8s with Minikube" class="md-nav__link">
+    <a href="../kubernetes_minikube/" title="K8s with Minikube" class="md-nav__link">
       K8s with Minikube
     </a>
   </li>
@@ -265,7 +256,7 @@
 
 
   <li class="md-nav__item">
-    <a href="kubernetes_aws/" title="K8s with AWS" class="md-nav__link">
+    <a href="../kubernetes_aws/" title="K8s with AWS" class="md-nav__link">
       K8s with AWS
     </a>
   </li>
@@ -275,11 +266,56 @@
       
       
 
+  
 
-  <li class="md-nav__item">
-    <a href="kubernetes_gcp/" title="K8s with GCP" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        K8s with GCP
+      </label>
+    
+    <a href="./" title="K8s with GCP" class="md-nav__link md-nav__link--active">
       K8s with GCP
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#google-container-engine" title="Google Container Engine" class="md-nav__link">
+    Google Container Engine
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quickstart" title="Quickstart" class="md-nav__link">
+    Quickstart
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
     
@@ -289,7 +325,7 @@
 
 
   <li class="md-nav__item">
-    <a href="kubernetes_dok/" title="K8s with DigitalOcean" class="md-nav__link">
+    <a href="../kubernetes_dok/" title="K8s with DigitalOcean" class="md-nav__link">
       K8s with DigitalOcean
     </a>
   </li>
@@ -312,6 +348,29 @@
     
   
   
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#google-container-engine" title="Google Container Engine" class="md-nav__link">
+    Google Container Engine
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quickstart" title="Quickstart" class="md-nav__link">
+    Quickstart
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -323,183 +382,9 @@
               
                 
                 
-                <h1 id="2019-snakemake-byok8s">2019-snakemake-byok8s<a class="headerlink" href="#2019-snakemake-byok8s" title="Permanent link">&para;</a></h1>
-<p><a href="https://travis-ci.org/charlesreid1/2019-snakemake-byok8s"><img alt="travis" src="https://img.shields.io/travis/charlesreid1/2019-snakemake-byok8s.svg" /></a>
-<a href="https://github.com/charlesreid1/2019-snakemake-byok8s/blob/master/LICENSE"><img alt="license" src="https://img.shields.io/github/license/charlesreid1/2019-snakemake-byok8s.svg" /></a></p>
-<h1 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h1>
-<p>This is an example of a Snakemake workflow that:</p>
-<ul>
-<li>is a command line utility</li>
-<li>is bundled as a Python package</li>
-<li>is designed to run on a Kubernetes cluster</li>
-<li>can be tested locally or with Travis CI using minikube</li>
-</ul>
-<p>Snakemake functionality is provided through
-a command line tool called <code>byok8s</code>, so that
-it allows you to do this (abbreviated for clarity):</p>
-<pre class="codehilite"><code># Create virtual k8s cluster
-minikube start
-
-# Run the workflow
-byok8s --s3-bucket=mah-s3-bukkit my-workflowfile my-paramsfile
-
-# Clean up the virtual k8s cluster
-minikube stop</code></pre>
-
-
-<p>Snakemake workflows are provided via a Snakefile by
-the user. Snakemake runs tasks on the Kubernetes (k8s)
-cluster. The approach is for the user to provide
-their own Kubernetes cluster (byok8s = Bring Your
-Own Kubernetes).</p>
-<p>The example above uses <a href="https://github.com/kubernetes/minikube"><code>minikube</code></a>
-to make a virtual k8s cluster, useful for testing.</p>
-<p>For real workflows, your options for
-kubernetes clusters are cloud providers:</p>
-<ul>
-<li>AWS EKS (Elastic Container Service)</li>
-<li>GCP GKE (Google Kuberntes Engine)</li>
-<li>Digital Ocean Kubernetes service</li>
-<li>etc...</li>
-</ul>
-<p>The Travis CI tests utilize minikube to run 
-test workflows.</p>
-<h1 id="quickstart">Quickstart<a class="headerlink" href="#quickstart" title="Permanent link">&para;</a></h1>
-<p>This runs through the installation and usage 
-of <code>2019-snakemake-byok8s</code>.</p>
-<p>Step 1: Set up Kubernetes cluster with <code>minikube</code>.</p>
-<p>Step 2: Install <code>byok8s</code>.</p>
-<p>Step 3: Run the <code>byok8s</code> workflow using the Kubernetes cluster. </p>
-<p>Step 4: Tear down Kubernetes cluster with <code>minikube</code>.</p>
-<h2 id="step-1-set-up-virtual-kubernetes-cluster">Step 1: Set Up Virtual Kubernetes Cluster<a class="headerlink" href="#step-1-set-up-virtual-kubernetes-cluster" title="Permanent link">&para;</a></h2>
-<p>For the purposes of the quickstart, we will walk
-through how to set up a local, virtual Kubernetes
-cluster using <code>minikube</code>.</p>
-<p>Start by installing minikube:</p>
-<pre class="codehilite"><code>scripts/install_minikube.sh</code></pre>
-
-
-<p>Once it is installed, you can start up a kubernetes cluster
-with minikube using the following commands:</p>
-<pre class="codehilite"><code>cd test
-minikube start</code></pre>
-
-
-<p>NOTE: If you are running on AWS, run this command first</p>
-<pre class="codehilite"><code>minikube config set vm-driver none</code></pre>
-
-
-<p>to set the the vm driver to none and use native Docker to run stuff.</p>
-<p>If you are running on AWS, the DNS in the minikube
-kubernetes cluster will not work, so run this command
-to fix the DNS settings (should be run from the
-<code>test/</code> directory):</p>
-<pre class="codehilite"><code>kubectl apply -f fixcoredns.yml
-kubectl delete --all pods --namespace kube-system</code></pre>
-
-
-<h2 id="step-2-install-byok8s">Step 2: Install byok8s<a class="headerlink" href="#step-2-install-byok8s" title="Permanent link">&para;</a></h2>
-<p>Start by setting up a python virtual environment,
-and install the required packages into the
-virtual environment:</p>
-<pre class="codehilite"><code>pip install -r requirements.txt</code></pre>
-
-
-<p>This installs snakemake and kubernetes Python
-modules. Now install the <code>byok8s</code> command line
-tool:</p>
-<pre class="codehilite"><code>python setup.py build install</code></pre>
-
-
-<p>Now you can run:</p>
-<pre class="codehilite"><code>which byok8s</code></pre>
-
-
-<p>and you should see <code>byok8s</code> in your virtual 
-environment's <code>bin/</code> directory.</p>
-<p>This command line utility will expect a kubernetes
-cluster to be set up before it is run. </p>
-<p>Setting up a kubernetes cluster will create...
-(fill in more info here)...</p>
-<p>Snakemake will automatically create the pods
-in the cluster, so you just need to allocate
-a kubernetes cluster.</p>
-<h2 id="step-3-run-byok8s">Step 3: Run byok8s<a class="headerlink" href="#step-3-run-byok8s" title="Permanent link">&para;</a></h2>
-<p>Now you can run the workflow with the <code>byok8s</code> command.
-This submits the Snakemake workflow jobs to the Kubernetes
-cluster that minikube created.</p>
-<p>You should have your workflow in a <code>Snakefile</code> in the
-current directory. Use the <code>--snakefile</code> flag if it is
-named something other than <code>Snakefile</code>.</p>
-<p>You will also need to specify your AWS credentials
-via the <code>AWS_ACCESS_KEY_ID</code> and <code>AWS_SECRET_ACCESS_KEY</code>
-environment variables. These are used to to access
-S3 buckets for file I/O.</p>
-<p>Finally, you will need to create an S3 bucket for
-Snakemake to use for file I/O. Pass the name of the
-bucket using the <code>--s3-bucket</code> flag.</p>
-<p>Start by exporting these two vars (careful to
-scrub them from bash history):</p>
-<pre class="codehilite"><code>export AWS_ACCESS_KEY_ID=XXXXX
-export AWS_SECRET_ACCESS_KEY=XXXXX</code></pre>
-
-
-<p>Run the alpha workflow with blue params:</p>
-<pre class="codehilite"><code>byok8s --s3-bucket=mah-bukkit workflow-alpha params-blue</code></pre>
-
-
-<p>Run the alpha workflow with red params:</p>
-<pre class="codehilite"><code>byok8s --s3-bucket=mah-bukkit workflow-alpha params-red</code></pre>
-
-
-<p>Run the gamma workflow with red params, &amp;c:</p>
-<pre class="codehilite"><code>byok8s --s3-bucket=mah-bukkit workflow-gamma params-red</code></pre>
-
-
-<p>(NOTE: May want to let the user specify 
-input and output directories with flags.)</p>
-<p>All input files are searched for relative to the working
-directory.</p>
-<h2 id="step-4-tear-down-kubernetes-cluster">Step 4: Tear Down Kubernetes Cluster<a class="headerlink" href="#step-4-tear-down-kubernetes-cluster" title="Permanent link">&para;</a></h2>
-<p>The last step once the workflow has been finished,
-is to tear down the kubernetes cluster. The virtual
-kubernetes cluster created by minikube can be torn
-down with the following command:</p>
-<pre class="codehilite"><code>minikube stop</code></pre>
-
-
-<h1 id="using-kubernetes-with-cloud-providers">Using Kubernetes with Cloud Providers<a class="headerlink" href="#using-kubernetes-with-cloud-providers" title="Permanent link">&para;</a></h1>
-<table>
-<thead>
-<tr>
-<th>Cloud Provider</th>
-<th>Kubernetes Service</th>
-<th>Guide</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Minikube (on AWS EC2)</td>
-<td>Minikube</td>
-<td><a href="kubernetes_minikube/">Minikube AWS Guide</a></td>
-</tr>
-<tr>
-<td>Google Cloud Platform (GCP)</td>
-<td>Google Container Engine (GKE)</td>
-<td><a href="kubernetes_gcp/">GCP GKE Guide</a></td>
-</tr>
-<tr>
-<td>Amazon Web Services (AWS)</td>
-<td>Elastic Container Service (EKS)</td>
-<td><a href="kubernetes_aws/">AWS EKS Guide</a></td>
-</tr>
-<tr>
-<td>Digital Ocean (DO)</td>
-<td>DO Kubernetes (DOK)</td>
-<td><a href="kubernetes_dok/">DO DOK Guide</a></td>
-</tr>
-</tbody>
-</table>
+                <h1 id="kubernetes-on-google-cloud-platform">Kubernetes on Google Cloud Platform<a class="headerlink" href="#kubernetes-on-google-cloud-platform" title="Permanent link">&para;</a></h1>
+<h2 id="google-container-engine">Google Container Engine<a class="headerlink" href="#google-container-engine" title="Permanent link">&para;</a></h2>
+<h2 id="quickstart">Quickstart<a class="headerlink" href="#quickstart" title="Permanent link">&para;</a></h2>
                 
                   
                 
@@ -521,14 +406,28 @@ down with the following command:</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
+          <a href="../kubernetes_aws/" title="K8s with AWS" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                K8s with AWS
+              </span>
+            </div>
+          </a>
         
-          <a href="kubernetes_minikube/" title="K8s with Minikube" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+        
+          <a href="../kubernetes_dok/" title="K8s with DigitalOcean" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                K8s with Minikube
+                K8s with DigitalOcean
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
@@ -562,11 +461,11 @@ down with the following command:</p>
       
     </div>
     
-      <script src="assets/javascripts/application.e72fd936.js"></script>
+      <script src="../assets/javascripts/application.e72fd936.js"></script>
       
-      <script>app.initialize({version:"1.0.4",url:{base:"."}})</script>
+      <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
       
-        <script src="search/main.js"></script>
+        <script src="../search/main.js"></script>
       
     
     
