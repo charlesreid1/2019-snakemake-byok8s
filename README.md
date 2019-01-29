@@ -2,6 +2,8 @@
 
 [![travis](https://img.shields.io/travis/charlesreid1/2019-snakemake-byok8s.svg)](https://travis-ci.org/charlesreid1/2019-snakemake-byok8s)
 [![license](https://img.shields.io/github/license/charlesreid1/2019-snakemake-byok8s.svg)](https://github.com/charlesreid1/2019-snakemake-byok8s/blob/master/LICENSE)
+![ubuntu bionic](https://img.shields.io/badge/ubuntu_bionic-16.04-orange.svg)
+![ubuntu xenial](https://img.shields.io/badge/ubuntu_xenial-18.04-orange.svg)
 
 # Overview
 
@@ -21,7 +23,7 @@ it allows you to do this (abbreviated for clarity):
 minikube start
 
 # Run the workflow
-byok8s --s3-bucket=mah-s3-bukkit my-workflowfile my-paramsfile
+byok8s --s3-bucket=mah-bukkit my-workflowfile my-paramsfile
 
 # Clean up the virtual k8s cluster
 minikube stop

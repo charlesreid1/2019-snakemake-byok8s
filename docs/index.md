@@ -2,6 +2,8 @@
 
 [![travis](https://img.shields.io/travis/charlesreid1/2019-snakemake-byok8s.svg)](https://travis-ci.org/charlesreid1/2019-snakemake-byok8s)
 [![license](https://img.shields.io/github/license/charlesreid1/2019-snakemake-byok8s.svg)](https://github.com/charlesreid1/2019-snakemake-byok8s/blob/master/LICENSE)
+![ubuntu bionic](https://img.shields.io/badge/ubuntu_bionic-16.04-orange.svg)
+![ubuntu xenial](https://img.shields.io/badge/ubuntu_xenial-18.04-orange.svg)
 
 # Overview
 
