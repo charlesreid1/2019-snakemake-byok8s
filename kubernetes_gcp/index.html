@@ -314,8 +314,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#google-kubernetes-engine" title="Google Kubernetes Engine" class="md-nav__link">
-    Google Kubernetes Engine
+  <a href="#google-kubernetes-engine-gke" title="Google Kubernetes Engine (GKE)" class="md-nav__link">
+    Google Kubernetes Engine (GKE)
   </a>
   
 </li>
@@ -402,8 +402,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#google-kubernetes-engine" title="Google Kubernetes Engine" class="md-nav__link">
-    Google Kubernetes Engine
+  <a href="#google-kubernetes-engine-gke" title="Google Kubernetes Engine (GKE)" class="md-nav__link">
+    Google Kubernetes Engine (GKE)
   </a>
   
 </li>
@@ -465,8 +465,8 @@ running the commands below to create a kubernetes cluster, and the gcloud
 utility will let you know if it needs APIs enabled for actions.  If it can't
 enable the API for you, it will give you a direct link to the relevant Google
 Cloud Console page.</p>
-<h2 id="google-kubernetes-engine">Google Kubernetes Engine<a class="headerlink" href="#google-kubernetes-engine" title="Permanent link">&para;</a></h2>
-<p>GKE uses Google Cloud compute nodes to run a kubernetes cluster
+<h2 id="google-kubernetes-engine-gke">Google Kubernetes Engine (GKE)<a class="headerlink" href="#google-kubernetes-engine-gke" title="Permanent link">&para;</a></h2>
+<p>GKE uses GCP compute nodes to run a kubernetes cluster
 on Google Cloud infrastructure. It automatically sets up the
 cluster for you, and allows you to use <code>kubectl</code> and <code>gcloud</code> to
 manage and interact with the remote cluster.</p>
@@ -665,6 +665,8 @@ Events:
 </pre></div>
 
 
+<p>Congratulations! You've successfully run an executable Snakemake workflow
+on a Google Cloud kubernetes cluster!</p>
 <p>Delete the GKE cluster when you are done:</p>
 <div class="codehilite"><pre><span></span>gcloud container clusters delete $CLUSTER_NAME
 </pre></div>

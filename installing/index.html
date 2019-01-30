@@ -447,26 +447,22 @@
                 
                 
                 <h1 id="installing-byok8s">Installing byok8s<a class="headerlink" href="#installing-byok8s" title="Permanent link">&para;</a></h1>
-<p>byok8s requires two pieces of prerequisite software:</p>
+<p>byok8s requires pieces of prerequisite software:</p>
 <ul>
 <li>python (conda)</li>
 <li>virtualenv (optional)</li>
 </ul>
-<p>It also requires an AWS S3 bucket to be specified 
-(the bucket must exist and credentials to access it
-must be provided via environment variables, see the
-<a href="../quickstart/">Quickstart</a>).</p>
 <p>Additionally, if you are planning to run byok8s on
 a local virtual kubernetes cluster, you must install:</p>
 <ul>
 <li>minikube</li>
 </ul>
-<p>Otherwise, if you are planning on running byok8s on 
-remote kubernetes clusters provided by cloud providers, 
-you must install:</p>
+<p>Otherwise, if you are planning on running byok8s on remote 
+kubernetes clusters provided by cloud providers
+or etc., you must install:</p>
 <ul>
 <li>kubernetes, <strong><em>OR</em></strong></li>
-<li>a cloud provider command line tool (<code>gcloud</code>, <code>aws</code>)</li>
+<li>a cloud provider command line tool (<code>gcloud</code>, <code>aws</code>) </li>
 </ul>
 <h2 id="installing-python">Installing Python<a class="headerlink" href="#installing-python" title="Permanent link">&para;</a></h2>
 <p>We recommend installing pyenv and using pyenv

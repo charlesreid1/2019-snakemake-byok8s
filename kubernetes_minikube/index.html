@@ -507,11 +507,12 @@ coredns-86c58d9df4-pr52t           0/1     CrashLoopBackOff   5          5m17s
 the CoreDNS image being used by <code>kube-system</code>.
 To do that, use the file
 <a href="https://github.com/charlesreid1/2019-snakemake-byok8s/blob/master/test/fixcoredns.yml"><code>test/fixcoredns.yml</code></a>
+<a href="https://github.com/charlesreid1/2019-snakemake-byok8s/blob/master/test/fixcoredns.yml"><code>test/fixcoredns.yml</code></a>
 in this repository with <code>kubectl apply</code>:</p>
 <div class="codehilite"><pre><span></span># Fix the DNS container
 kubectl apply -f fixcoredns.yml
 
-# Delete all kube-system containers
+# Delete all kube-system containers 
 kubectl delete --all pods --namespace kube-system
 </pre></div>
 
@@ -534,8 +535,8 @@ byok8s workflow-alpha params-blue --s3-bucket=mah-bukkit
 </pre></div>
 
 
-<p>Congratulations! You've just run an executable Snakemake workflow
-on a minikube kubernetes cluster.</p>
+<p>Congratulations! You've just run an executable Snakemake workflow 
+on a minikube kubernetes cluster. </p>
                 
                   
                 
