@@ -285,8 +285,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#installing-minikube" title="Installing Minikube" class="md-nav__link">
-    Installing Minikube
+  <a href="#installing-minikube" title="Installing minikube" class="md-nav__link">
+    Installing minikube
   </a>
   
 </li>
@@ -416,8 +416,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#installing-minikube" title="Installing Minikube" class="md-nav__link">
-    Installing Minikube
+  <a href="#installing-minikube" title="Installing minikube" class="md-nav__link">
+    Installing minikube
   </a>
   
 </li>
@@ -447,22 +447,26 @@
                 
                 
                 <h1 id="installing-byok8s">Installing byok8s<a class="headerlink" href="#installing-byok8s" title="Permanent link">&para;</a></h1>
-<p>byok8s requires two things:</p>
+<p>byok8s requires two pieces of prerequisite software:</p>
 <ul>
 <li>python (conda)</li>
 <li>virtualenv (optional)</li>
 </ul>
+<p>It also requires an AWS S3 bucket to be specified 
+(the bucket must exist and credentials to access it
+must be provided via environment variables, see the
+<a href="../quickstart/">Quickstart</a>).</p>
 <p>Additionally, if you are planning to run byok8s on
 a local virtual kubernetes cluster, you must install:</p>
 <ul>
 <li>minikube</li>
 </ul>
-<p>If you are planning on running byok8s on remote 
-kubernetes clusters provided by cloud providers
-or etc., you must install:</p>
+<p>Otherwise, if you are planning on running byok8s on 
+remote kubernetes clusters provided by cloud providers, 
+you must install:</p>
 <ul>
 <li>kubernetes, <strong><em>OR</em></strong></li>
-<li>cloud provider command line tool</li>
+<li>a cloud provider command line tool (<code>gcloud</code>, <code>aws</code>)</li>
 </ul>
 <h2 id="installing-python">Installing Python<a class="headerlink" href="#installing-python" title="Permanent link">&para;</a></h2>
 <p>We recommend installing pyenv and using pyenv
@@ -485,7 +489,7 @@ set up a virtual environment:</p>
 </pre></div>
 
 
-<h2 id="installing-minikube">Installing Minikube<a class="headerlink" href="#installing-minikube" title="Permanent link">&para;</a></h2>
+<h2 id="installing-minikube">Installing minikube<a class="headerlink" href="#installing-minikube" title="Permanent link">&para;</a></h2>
 <p>This step is only required if you plan to run byok8s
 kubernetes workflows locally on a virtual kubernetes
 cluster (i.e., testing mode).</p>
