@@ -1,6 +1,4 @@
 # Kubernetes on AWS
 
-## Elastic Container Service
-
-## Quickstart
+Check back soon for an EKS guide!
 

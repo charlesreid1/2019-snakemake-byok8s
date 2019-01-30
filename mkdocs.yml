@@ -23,10 +23,11 @@ theme:
     code: 'Roboto Mono'
 nav:
   - 'Index': 'index.md'
+  - 'Installing': 'installing.md'
   - 'Quickstart': 'quickstart.md'
   - 'K8s with Minikube' :     'kubernetes_minikube.md'
-  - 'K8s with AWS' :          'kubernetes_aws.md'
   - 'K8s with GCP' :          'kubernetes_gcp.md'
+  - 'K8s with AWS' :          'kubernetes_aws.md'
   - 'K8s with DigitalOcean' : 'kubernetes_dok.md'
   - 'Travis Tests': 'travis_tests.md'
 

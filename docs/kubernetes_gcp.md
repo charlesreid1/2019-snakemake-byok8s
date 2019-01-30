@@ -1,15 +1,18 @@
 # Kubernetes on Google Cloud Platform
 
-This document will walk you through how to start a
-kubernetes cluster using Google Cloud Platform (GCP),
-run the byok8s workflow on the kubernetes cluster,
-and tear down the cluster.
+This document will walk you through how to start a kubernetes cluster using the
+Google Kubernetes Engine (GKE) on Google Cloud Platform (GCP), run the byok8s
+Snakemake workflow on the GKE kubernetes cluster, and tear down the cluster
+when the workflow is complete.
 
 ## Setup
 
 Before you can create a kubernetes cluster on Google Cloud,
 you need a Google Cloud account and a Google Cloud project.
+You can sign up for a Google Cloud account [here](https://cloud.google.com/).
 You can create a new project from the [Google Cloud Console](https://console.cloud.google.com/).
+New accounts start with 300 free hours specifically to let you
+test drive features like GKE! Cool!
 
 Once you have your account and your project, you can install
 the `gcloud` Google Cloud SDK command line utility 
@@ -28,14 +31,14 @@ copy and paste into the terminal.
 
 The **Compute API** and **Kubernetes API** will both need to be
 enabled as well. These can be enabled via the 
-[Google Cloud Console](https://console.cloud.google.com/),
-or read on.
+[Google Cloud Console](https://console.cloud.google.com/)
+(or read on).
 
-If you aren't sure what to do, start running the commands 
-below to create a kubernetes cluster, and the gcloud utility
-will let you know if it needs APIs enabled for actions.
-If it can't enable the API for you, it will give you a 
-direct link to the relevant Google Cloud Console page.
+If you aren't sure how to use the console to enable these APIs, just start
+running the commands below to create a kubernetes cluster, and the gcloud
+utility will let you know if it needs APIs enabled for actions.  If it can't
+enable the API for you, it will give you a direct link to the relevant Google
+Cloud Console page.
 
 ## Google Kubernetes Engine
 
@@ -179,6 +182,78 @@ removed all locks
 
 Congratulations! You'e just run an executable Snakemake workflow
 on a Google Cloud kubernetes cluster!
+
+You can get more information about the containers running each step of 
+the workflow using the `kubectl describe` commands printed in the output.
+Here is an example:
+
+```
+$ kubectl describe pod snakejob-c91f804c-805a-56a2-b0ea-b3b74bc38001
+Name:         snakejob-c91f804c-805a-56a2-b0ea-b3b74bc38001
+Namespace:    default
+Node:         gke-mycluster-default-pool-b44fa389-vh3x/10.138.0.7
+Start Time:   Mon, 28 Jan 2019 23:55:18 -0800
+Labels:       app=snakemake
+Annotations:  <none>
+Status:       Running
+IP:           10.0.6.4
+Containers:
+  snakejob-c91f804c-805a-56a2-b0ea-b3b74bc38001:
+    Container ID:  docker://2aaa04c34770c6088334b29c0332dc426aff2fbbd3a8af07b65bbbc2c5fe437d
+    Image:         quay.io/snakemake/snakemake:v5.4.0
+    Image ID:      docker-pullable://quay.io/snakemake/snakemake@sha256:f5bb7bef99c4e45cb7dfd5b55535b8dc185b43ca610341476378a9566a8b52c5
+    Port:          <none>
+    Host Port:     <none>
+    Command:
+      /bin/sh
+    Args:
+      -c
+      cp -rf /source/. . && snakemake cmr-0123/.zetaB1 --snakefile Snakefile --force -j --keep-target-files  --keep-remote --latency-wait 0  --attempt 1 --force-use-threads --wrapper-prefix None --config 'name='"'"'blue'"'"'' -p --nocolor --notemp --no-hooks --nolock  --default-remote-provider S3 --default-remote-prefix cmr-0123  --allowed-rules target3sleepyB1
+    State:          Running
+      Started:      Mon, 28 Jan 2019 23:56:15 -0800
+    Ready:          True
+    Restart Count:  0
+    Requests:
+      cpu:  0
+    Environment:
+      AWS_ACCESS_KEY_ID:      <set to the key 'aws_access_key_id' in secret 'e077a45f-1274-4a98-a76c-d1a9718707db'>      Optional: false
+      AWS_SECRET_ACCESS_KEY:  <set to the key 'aws_secret_access_key' in secret 'e077a45f-1274-4a98-a76c-d1a9718707db'>  Optional: false
+    Mounts:
+      /source from source (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-jmnv4 (ro)
+Conditions:
+  Type           Status
+  Initialized    True
+  Ready          True
+  PodScheduled   True
+Volumes:
+  source:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  e077a45f-1274-4a98-a76c-d1a9718707db
+    Optional:    false
+  workdir:
+    Type:    EmptyDir (a temporary directory that shares a pod's lifetime)
+    Medium:
+  default-token-jmnv4:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  default-token-jmnv4
+    Optional:    false
+QoS Class:       BestEffort
+Node-Selectors:  <none>
+Tolerations:     node.kubernetes.io/not-ready:NoExecute for 300s
+                 node.kubernetes.io/unreachable:NoExecute for 300s
+Events:
+  Type    Reason                 Age   From                                               Message
+  ----    ------                 ----  ----                                               -------
+  Normal  Scheduled              63s   default-scheduler                                  Successfully assigned snakejob-c91f804c-805a-56a2-b0ea-b3b74bc38001 to gke-mycluster-default-pool-b44fa389-vh3x
+  Normal  SuccessfulMountVolume  63s   kubelet, gke-mycluster-default-pool-b44fa389-vh3x  MountVolume.SetUp succeeded for volume "workdir"
+  Normal  SuccessfulMountVolume  63s   kubelet, gke-mycluster-default-pool-b44fa389-vh3x  MountVolume.SetUp succeeded for volume "default-token-jmnv4"
+  Normal  SuccessfulMountVolume  63s   kubelet, gke-mycluster-default-pool-b44fa389-vh3x  MountVolume.SetUp succeeded for volume "source"
+  Normal  Pulling                61s   kubelet, gke-mycluster-default-pool-b44fa389-vh3x  pulling image "quay.io/snakemake/snakemake:v5.4.0"
+  Normal  Pulled                 10s   kubelet, gke-mycluster-default-pool-b44fa389-vh3x  Successfully pulled image "quay.io/snakemake/snakemake:v5.4.0"
+  Normal  Created                6s    kubelet, gke-mycluster-default-pool-b44fa389-vh3x  Created container
+  Normal  Started                6s    kubelet, gke-mycluster-default-pool-b44fa389-vh3x  Started container
+```
 
 Delete the GKE cluster when you are done:
 
