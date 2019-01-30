@@ -45,10 +45,6 @@ minikube stop
 ```
 
 ## Getting Up and Running
-Snakemake workflows are provided via a Snakefile by
-the user. Snakemake runs tasks on the Kubernetes (k8s)
-cluster. The approach is for the user to provide
-their own Kubernetes cluster (byok8s = Bring Your
 
 See the [Quickstart Guide](quickstart.md) to get up and 
 running with byok8s.
@@ -127,4 +123,3 @@ We have guides for the following:
 | Amazon Web Services (AWS)   | Elastic Container Service (EKS) | [byok8s AWS EKS Guide](kubernetes_aws.md)       | Unfinished |
 | Digital Ocean (DO)          | DO Kubernetes (DOK)             | [byok8s DO DOK Guide](kubernetes_dok.md)        | Unfinished |
 
-Own Kubernetes).

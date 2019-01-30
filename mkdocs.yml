@@ -1,0 +1,42 @@
+site_name: 2019-snakemake-byok8s
+site_url: https://charlesreid1.github.io/2019-snakemake-byok8s
+repo_name: 2019-snakemake-byok8s 
+repo_url: https://github.com/charlesreid1/2019-snakemake-byok8s
+edit_uri: ""
+
+copyright: 'Copyright &copy; 2018 <a href="https://charlesreid1.com">Charles Reid</a>, released under the <a href="https://opensource.org/licenses/MIT">MIT license</a> <br /><br />
+<div>Icon made by Freepik, obtained from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>, used under a <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div> license.'
+
+docs_dir: docs
+site_dir: site
+extra_css:
+  - css/custom.css
+theme:
+  name: null
+  custom_dir: 'mkdocs-material-dib/material'
+  palette:
+    primary: 'blue'
+    accent: 'blue'
+  logo: 'images/ship.svg'
+  font:
+    text: 'Roboto'
+    code: 'Roboto Mono'
+nav:
+  - 'Index': 'index.md'
+  - 'Installing': 'installing.md'
+  - 'Quickstart': 'quickstart.md'
+  - 'K8s with Minikube' :     'kubernetes_minikube.md'
+  - 'K8s with GCP' :          'kubernetes_gcp.md'
+  - 'K8s with AWS' :          'kubernetes_aws.md'
+  - 'K8s with DigitalOcean' : 'kubernetes_dok.md'
+  - 'Travis Tests': 'travis_tests.md'
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - codehilite:
+      guess_lang: false
+  - toc:
+      permalink: true
+
+strict: true

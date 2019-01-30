@@ -5,3 +5,6 @@ vp/
 build/
 dist/
 test/*.txt
+
+# mkdocs
+site/
