@@ -25,8 +25,8 @@ k8s = kubernetes
 byok8s is a command line utility that launches
 a Snakemake workflow on an existing Kubernetes
 cluster. This allows you to do something
-like this (also see the [Installation](installing.md)
-and [Quickstart](quickstart.md) guides in the
+like this (also see the [Installation](docs/installing.md)
+and [Quickstart](docs/quickstart.md) guides in the
 documentation):
 
 ```
@@ -45,12 +45,8 @@ minikube stop
 ```
 
 ## Getting Up and Running
-Snakemake workflows are provided via a Snakefile by
-the user. Snakemake runs tasks on the Kubernetes (k8s)
-cluster. The approach is for the user to provide
-their own Kubernetes cluster (byok8s = Bring Your
 
-See the [Quickstart Guide](quickstart.md) to get up and 
+See the [Quickstart Guide](docs/quickstart.md) to get up and 
 running with byok8s.
 
 ## How does byok8s work?
@@ -102,11 +98,11 @@ or Google Cloud.
 But the compute nodes can also be virtual, which is where
 [minikube](https://github.com/kubernetes/minikube) comes in.  It creates a
 kubernetes cluster that is entirely local and virtual, which makes testing
-easy. See the [byok8s Minikube Guide](kubernetes_minikube.md) for details
+easy. See the [byok8s Minikube Guide](docs/kubernetes_minikube.md) for details
 about how to use minikube with byok8s.
 
 The Travis CI tests also utilize minikube to run test workflows. See [byok8s
-Travis Tests](travis_tests.md) for more information.
+Travis Tests](docs/travis_tests.md) for more information.
 
 ## Cloud Providers
 
@@ -122,9 +118,8 @@ We have guides for the following:
 
 |  Cloud Provider             | Kubernetes Service              | Guide                                           | State      |
 |-----------------------------|---------------------------------|-------------------------------------------------|------------|
-| Minikube (on AWS EC2)       | Minikube                        | [byok8s Minikube Guide](kubernetes_minikube.md) |   Finished |
-| Google Cloud Platform (GCP) | Google Container Engine (GKE)   | [byok8s GCP GKE Guide](kubernetes_gcp.md)       |   Finished |
-| Amazon Web Services (AWS)   | Elastic Container Service (EKS) | [byok8s AWS EKS Guide](kubernetes_aws.md)       | Unfinished |
-| Digital Ocean (DO)          | DO Kubernetes (DOK)             | [byok8s DO DOK Guide](kubernetes_dok.md)        | Unfinished |
+| Minikube (on AWS EC2)       | Minikube                        | [byok8s Minikube Guide](docs/kubernetes_minikube.md) |   Finished |
+| Google Cloud Platform (GCP) | Google Container Engine (GKE)   | [byok8s GCP GKE Guide](docs/kubernetes_gcp.md)       |   Finished |
+| Amazon Web Services (AWS)   | Elastic Container Service (EKS) | [byok8s AWS EKS Guide](docs/kubernetes_aws.md)       | Unfinished |
+| Digital Ocean (DO)          | DO Kubernetes (DOK)             | [byok8s DO DOK Guide](docs/kubernetes_dok.md)        | Unfinished |
 
-Own Kubernetes).
