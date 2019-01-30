@@ -102,7 +102,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="../#minikube-on-aws-ec2-nodes" tabindex="1" class="md-skip">
+      <a href="../#running-byok8s-with-minikube" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -244,6 +244,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../installing/" title="Installing" class="md-nav__link">
+      Installing
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
     <a href="../quickstart/" title="Quickstart" class="md-nav__link">
       Quickstart
     </a>
@@ -283,8 +295,22 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#quickstart" title="Quickstart" class="md-nav__link">
-    Quickstart
+  <a href="#installing" title="Installing" class="md-nav__link">
+    Installing
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quickstart-on-bare-metal-machine" title="Quickstart on Bare Metal Machine" class="md-nav__link">
+    Quickstart on Bare Metal Machine
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quickstart-on-cloud-machine" title="Quickstart on Cloud Machine" class="md-nav__link">
+    Quickstart on Cloud Machine
   </a>
   
 </li>
@@ -306,8 +332,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../kubernetes_aws/" title="K8s with AWS" class="md-nav__link">
-      K8s with AWS
+    <a href="../kubernetes_gcp/" title="K8s with GCP" class="md-nav__link">
+      K8s with GCP
     </a>
   </li>
 
@@ -318,8 +344,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../kubernetes_gcp/" title="K8s with GCP" class="md-nav__link">
-      K8s with GCP
+    <a href="../kubernetes_aws/" title="K8s with AWS" class="md-nav__link">
+      K8s with AWS
     </a>
   </li>
 
@@ -369,8 +395,22 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#quickstart" title="Quickstart" class="md-nav__link">
-    Quickstart
+  <a href="#installing" title="Installing" class="md-nav__link">
+    Installing
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quickstart-on-bare-metal-machine" title="Quickstart on Bare Metal Machine" class="md-nav__link">
+    Quickstart on Bare Metal Machine
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quickstart-on-cloud-machine" title="Quickstart on Cloud Machine" class="md-nav__link">
+    Quickstart on Cloud Machine
   </a>
   
 </li>
@@ -392,8 +432,103 @@
               
                 
                 
-                <h1 id="minikube-on-aws-ec2-nodes">Minikube on AWS EC2 Nodes<a class="headerlink" href="#minikube-on-aws-ec2-nodes" title="Permanent link">&para;</a></h1>
-<h2 id="quickstart">Quickstart<a class="headerlink" href="#quickstart" title="Permanent link">&para;</a></h2>
+                <h1 id="running-byok8s-with-minikube">Running byok8s with minikube<a class="headerlink" href="#running-byok8s-with-minikube" title="Permanent link">&para;</a></h1>
+<h2 id="installing">Installing<a class="headerlink" href="#installing" title="Permanent link">&para;</a></h2>
+<p>See the <a href="../installing/">Installing</a> page for details
+about installing byok8s and its prerequisites
+(including minikube).</p>
+<p>We cover two scenarios:</p>
+<ul>
+<li>
+<p>bare metal machine, i.e., a laptop or desktop machine
+  that can run a hypervisor like VirtualBox</p>
+</li>
+<li>
+<p>cloud machine, i.e., AWS EC2 node, which is itself a
+  virtual machine and cannot run a hypervisor</p>
+</li>
+</ul>
+<p>These quickstarts assume you have Python and minikube
+installed, and that you have cloned and installed byok8s
+at <code>~/2019-snakemake-byok8s/</code>.</p>
+<h2 id="quickstart-on-bare-metal-machine">Quickstart on Bare Metal Machine<a class="headerlink" href="#quickstart-on-bare-metal-machine" title="Permanent link">&para;</a></h2>
+<p>On a bare metal machine, the procedure is 
+relatively uncomplicated: we create a cluster,
+we export some variables, we run the workflow,
+we tear down the cluster:</p>
+<div class="codehilite"><pre><span></span># Start a minikube cluster
+minikube start
+
+# Verify k8s is running
+minikube status
+
+# Export AWS credentials
+export AWS_ACCESS_KEY_ID=&quot;XXXXX&quot;
+export AWS_SECRET_ACCESS_KEY=&quot;XXXXX&quot;
+
+# Run the workflow
+byok8s workflow-alpha params-blue --s3-bucket=mah-bukkit 
+
+# Stop the minikube cluster
+minikube stop
+</pre></div>
+
+
+<h2 id="quickstart-on-cloud-machine">Quickstart on Cloud Machine<a class="headerlink" href="#quickstart-on-cloud-machine" title="Permanent link">&para;</a></h2>
+<p>As mentioned above, cloud compute nodes are virtual machines
+themselves and cannot run a hypervisor, so things are a bit
+more complicated.</p>
+<p>To tell minikube not to use a virtual machine driver,
+run the following command in a terminal to create
+a minikube config file:</p>
+<div class="codehilite"><pre><span></span>cat &lt;&lt;&#39;EOF&#39; &gt; ~/.minikube/config/config.json
+{
+    &quot;vm-driver&quot;: &quot;none&quot;
+}
+EOF
+</pre></div>
+
+
+<p>Now you can start up a minikube cluster. </p>
+<p>There is an additional DNS problem that needs to be fixed
+in the containers before you proceed. You will know there
+is a problem if you run the <code>get pods</code> command with
+<code>kubectl</code> and see your CoreDNS containers in a 
+<code>CrashLoopBackOff</code> state:</p>
+<div class="codehilite"><pre><span></span>$ kubectl get pods --namespace=kube-system
+NAME                               READY   STATUS             RESTARTS   AGE
+coredns-86c58d9df4-lvq8b           0/1     CrashLoopBackOff   5          5m17s
+coredns-86c58d9df4-pr52t           0/1     CrashLoopBackOff   5          5m17s
+...                                ...     ...                ...        ...
+</pre></div>
+
+
+<p>To fix, use 
+<a href="https://github.com/charlesreid1/2019-snakemake-byok8s/blob/master/test/fixcoredns.yml"><code>test/fixcoredns.yml</code></a>
+file in the repository:</p>
+<div class="codehilite"><pre><span></span># Fix the DNS container
+kubectl apply -f fixcoredns.yml
+
+# Restart all k8s system containers
+kubectl delete --all pods --namespace kube-system
+</pre></div>
+
+
+<p>The k8s cluster will automatically restart.</p>
+<div class="codehilite"><pre><span></span># Return to our virtual environment
+cd ~/2019-snakemake-byok8s/test/
+source vp/bin/activate
+
+# Verify k8s is running
+minikube status
+
+# Export AWS keys for Snakemake
+export AWS_ACCESS_KEY_ID=&quot;XXXXX&quot;
+export AWS_SECRET_ACCESS_KEY=&quot;XXXXX&quot;
+
+# Run byok8s
+byok8s workflow-alpha params-blue --s3-bucket=mah-bukkit 
+</pre></div>
                 
                   
                 
@@ -430,13 +565,13 @@
           </a>
         
         
-          <a href="../kubernetes_aws/" title="K8s with AWS" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../kubernetes_gcp/" title="K8s with GCP" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                K8s with AWS
+                K8s with GCP
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">

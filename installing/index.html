@@ -11,7 +11,7 @@
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       
       
-        <link rel="canonical" href="https://charlesreid1.github.io/2019-snakemake-byok8s/kubernetes_dok/">
+        <link rel="canonical" href="https://charlesreid1.github.io/2019-snakemake-byok8s/installing/">
       
       
       
@@ -38,7 +38,7 @@
     
     
       
-        <title>K8s with DigitalOcean - 2019-snakemake-byok8s</title>
+        <title>Installing - 2019-snakemake-byok8s</title>
       
     
     
@@ -102,7 +102,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="../#kubernetes-on-digital-ocean" tabindex="1" class="md-skip">
+      <a href="../#installing-byok8s" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -128,7 +128,7 @@
                 2019-snakemake-byok8s
               </span>
               <span class="md-header-nav__topic">
-                K8s with DigitalOcean
+                Installing
               </span>
             
           
@@ -242,11 +242,70 @@
       
       
 
+  
 
-  <li class="md-nav__item">
-    <a href="../installing/" title="Installing" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Installing
+      </label>
+    
+    <a href="./" title="Installing" class="md-nav__link md-nav__link--active">
       Installing
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#installing-python" title="Installing Python" class="md-nav__link">
+    Installing Python
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-virtualenv" title="Installing virtualenv" class="md-nav__link">
+    Installing virtualenv
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-minikube" title="Installing Minikube" class="md-nav__link">
+    Installing Minikube
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-byok8s_1" title="Installing byok8s" class="md-nav__link">
+    Installing byok8s
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
     
@@ -302,20 +361,11 @@
       
       
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-      
-    
-    
-    <a href="./" title="K8s with DigitalOcean" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="../kubernetes_dok/" title="K8s with DigitalOcean" class="md-nav__link">
       K8s with DigitalOcean
     </a>
-    
   </li>
 
     
@@ -348,6 +398,43 @@
     
   
   
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#installing-python" title="Installing Python" class="md-nav__link">
+    Installing Python
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-virtualenv" title="Installing virtualenv" class="md-nav__link">
+    Installing virtualenv
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-minikube" title="Installing Minikube" class="md-nav__link">
+    Installing Minikube
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-byok8s_1" title="Installing byok8s" class="md-nav__link">
+    Installing byok8s
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -359,12 +446,95 @@
               
                 
                 
-                <h1 id="kubernetes-on-digital-ocean">Kubernetes on Digital Ocean<a class="headerlink" href="#kubernetes-on-digital-ocean" title="Permanent link">&para;</a></h1>
-<p>Check back soon for a Digital Ocean kubernetes guide!</p>
-<p>(Use web interface to set up a Kubernetes cluster,
-then use <code>kubectl</code> to connect with Digital Ocean
-via Digital Ocean credentials.)</p>
-<p><a href="https://www.digitalocean.com/docs/kubernetes/how-to/connect-with-kubectl/">link</a></p>
+                <h1 id="installing-byok8s">Installing byok8s<a class="headerlink" href="#installing-byok8s" title="Permanent link">&para;</a></h1>
+<p>byok8s requires two things:</p>
+<ul>
+<li>python (conda)</li>
+<li>virtualenv (optional)</li>
+</ul>
+<p>Additionally, if you are planning to run byok8s on
+a local virtual kubernetes cluster, you must install:</p>
+<ul>
+<li>minikube</li>
+</ul>
+<p>If you are planning on running byok8s on remote 
+kubernetes clusters provided by cloud providers
+or etc., you must install:</p>
+<ul>
+<li>kubernetes, <strong><em>OR</em></strong></li>
+<li>cloud provider command line tool</li>
+</ul>
+<h2 id="installing-python">Installing Python<a class="headerlink" href="#installing-python" title="Permanent link">&para;</a></h2>
+<p>We recommend installing pyenv and using pyenv
+to install miniconda:</p>
+<div class="codehilite"><pre><span></span>curl https://pyenv.run | bash
+</pre></div>
+
+
+<p>Restart your shell and install miniconda:</p>
+<div class="codehilite"><pre><span></span>pyenv update
+pyenv install miniconda3-4.3.30
+pyenv global miniconda3-4.3.30
+</pre></div>
+
+
+<h2 id="installing-virtualenv">Installing virtualenv<a class="headerlink" href="#installing-virtualenv" title="Permanent link">&para;</a></h2>
+<p>You will need the virtualenv package to
+set up a virtual environment:</p>
+<div class="codehilite"><pre><span></span>pip install virtualenv
+</pre></div>
+
+
+<h2 id="installing-minikube">Installing Minikube<a class="headerlink" href="#installing-minikube" title="Permanent link">&para;</a></h2>
+<p>This step is only required if you plan to run byok8s
+kubernetes workflows locally on a virtual kubernetes
+cluster (i.e., testing mode).</p>
+<p>Install the 64-bit Linux version of minikube, or visit the
+<a href="https://kubernetes.io/docs/tasks/tools/install-minikube/">installing minikube</a>
+to find the right version:</p>
+<div class="codehilite"><pre><span></span>curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \
+  &amp;&amp; sudo install minikube-linux-amd64 /usr/local/bin/minikube
+</pre></div>
+
+
+<p>(On a Mac you can do <code>brew install minikube</code>.)</p>
+<p>If you are planning on running on a bare metal
+machine, you will also need to install a hypervisor
+like VirtualBox or KVM, see <a href="https://kubernetes.io/docs/tasks/tools/install-minikube/">installing minikube</a>.</p>
+<p>If you are planning on running minikube on a compute
+node in the cloud, you cannot run a hypervisor, so you
+will need to run using the native driver; see 
+<a href="https://kubernetes.io/docs/tasks/tools/install-minikube/">installing minikube</a>.</p>
+<p>Once you have installed minikube, you do not need to
+install kubernetes.</p>
+<h2 id="installing-byok8s_1">Installing byok8s<a class="headerlink" href="#installing-byok8s_1" title="Permanent link">&para;</a></h2>
+<p>Start by cloning the repo and installing byok8s:</p>
+<div class="codehilite"><pre><span></span>cd 
+git clone https://github.com/charlesreid1/2019-snakemake-byok8s.git
+cd ~/2019-snakemake-byok8s
+</pre></div>
+
+
+<p>Next, you'll create a virtual environment:</p>
+<div class="codehilite"><pre><span></span>virtualenv vp
+source vp/bin/activate
+
+pip install -r requirements.txt
+python setup.py build install
+</pre></div>
+
+
+<p>Now you should be ready to rock:</p>
+<div class="codehilite"><pre><span></span>which byok8s
+</pre></div>
+
+
+<p>This will only be present when you have activated
+your virtual environment. To activate/re-activate your 
+virtual environment:</p>
+<div class="codehilite"><pre><span></span>cd ~/2019-snakemake-byok8s
+source vp/bin/activate
+</pre></div>
                 
                   
                 
@@ -386,7 +556,7 @@ via Digital Ocean credentials.)</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../kubernetes_aws/" title="K8s with AWS" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href=".." title="Index" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -395,19 +565,19 @@ via Digital Ocean credentials.)</p>
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                K8s with AWS
+                Index
               </span>
             </div>
           </a>
         
         
-          <a href="../travis_tests/" title="Travis Tests" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../quickstart/" title="Quickstart" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Travis Tests
+                Quickstart
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">

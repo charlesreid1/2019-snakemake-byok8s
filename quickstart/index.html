@@ -242,6 +242,18 @@
       
       
 
+
+  <li class="md-nav__item">
+    <a href="../installing/" title="Installing" class="md-nav__link">
+      Installing
+    </a>
+  </li>
+
+    
+      
+      
+      
+
   
 
 
@@ -327,8 +339,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../kubernetes_aws/" title="K8s with AWS" class="md-nav__link">
-      K8s with AWS
+    <a href="../kubernetes_gcp/" title="K8s with GCP" class="md-nav__link">
+      K8s with GCP
     </a>
   </li>
 
@@ -339,8 +351,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../kubernetes_gcp/" title="K8s with GCP" class="md-nav__link">
-      K8s with GCP
+    <a href="../kubernetes_aws/" title="K8s with AWS" class="md-nav__link">
+      K8s with AWS
     </a>
   </li>
 
@@ -446,17 +458,20 @@ of <code>2019-snakemake-byok8s</code>.</p>
 through how to set up a local, virtual Kubernetes
 cluster using <code>minikube</code>.</p>
 <p>Start by installing minikube:</p>
-<pre class="codehilite"><code>scripts/install_minikube.sh</code></pre>
+<div class="codehilite"><pre><span></span>scripts/install_minikube.sh
+</pre></div>
 
 
 <p>Once it is installed, you can start up a kubernetes cluster
 with minikube using the following commands:</p>
-<pre class="codehilite"><code>cd test
-minikube start</code></pre>
+<div class="codehilite"><pre><span></span>cd test
+minikube start
+</pre></div>
 
 
 <p>NOTE: If you are running on AWS, run this command first</p>
-<pre class="codehilite"><code>minikube config set vm-driver none</code></pre>
+<div class="codehilite"><pre><span></span>minikube config set vm-driver none
+</pre></div>
 
 
 <p>to set the the vm driver to none and use native Docker to run stuff.</p>
@@ -464,25 +479,29 @@ minikube start</code></pre>
 kubernetes cluster will not work, so run this command
 to fix the DNS settings (should be run from the
 <code>test/</code> directory):</p>
-<pre class="codehilite"><code>kubectl apply -f fixcoredns.yml
-kubectl delete --all pods --namespace kube-system</code></pre>
+<div class="codehilite"><pre><span></span>kubectl apply -f fixcoredns.yml
+kubectl delete --all pods --namespace kube-system
+</pre></div>
 
 
 <h2 id="step-2-install-byok8s">Step 2: Install byok8s<a class="headerlink" href="#step-2-install-byok8s" title="Permanent link">&para;</a></h2>
 <p>Start by setting up a python virtual environment,
 and install the required packages into the
 virtual environment:</p>
-<pre class="codehilite"><code>pip install -r requirements.txt</code></pre>
+<div class="codehilite"><pre><span></span>pip install -r requirements.txt
+</pre></div>
 
 
 <p>This installs snakemake and kubernetes Python
 modules. Now install the <code>byok8s</code> command line
 tool:</p>
-<pre class="codehilite"><code>python setup.py build install</code></pre>
+<div class="codehilite"><pre><span></span>python setup.py build install
+</pre></div>
 
 
 <p>Now you can run:</p>
-<pre class="codehilite"><code>which byok8s</code></pre>
+<div class="codehilite"><pre><span></span>which byok8s
+</pre></div>
 
 
 <p>and you should see <code>byok8s</code> in your virtual 
@@ -510,20 +529,24 @@ Snakemake to use for file I/O. Pass the name of the
 bucket using the <code>--s3-bucket</code> flag.</p>
 <p>Start by exporting these two vars (careful to
 scrub them from bash history):</p>
-<pre class="codehilite"><code>export AWS_ACCESS_KEY_ID=XXXXX
-export AWS_SECRET_ACCESS_KEY=XXXXX</code></pre>
+<div class="codehilite"><pre><span></span>export AWS_ACCESS_KEY_ID=XXXXX
+export AWS_SECRET_ACCESS_KEY=XXXXX
+</pre></div>
 
 
 <p>Run the alpha workflow with blue params:</p>
-<pre class="codehilite"><code>byok8s --s3-bucket=mah-bukkit workflow-alpha params-blue</code></pre>
+<div class="codehilite"><pre><span></span>byok8s --s3-bucket=mah-bukkit workflow-alpha params-blue
+</pre></div>
 
 
 <p>Run the alpha workflow with red params:</p>
-<pre class="codehilite"><code>byok8s --s3-bucket=mah-bukkit workflow-alpha params-red</code></pre>
+<div class="codehilite"><pre><span></span>byok8s --s3-bucket=mah-bukkit workflow-alpha params-red
+</pre></div>
 
 
 <p>Run the gamma workflow with red params, &amp;c:</p>
-<pre class="codehilite"><code>byok8s --s3-bucket=mah-bukkit workflow-gamma params-red</code></pre>
+<div class="codehilite"><pre><span></span>byok8s --s3-bucket=mah-bukkit workflow-gamma params-red
+</pre></div>
 
 
 <p>(NOTE: May want to let the user specify 
@@ -535,7 +558,8 @@ directory.</p>
 is to tear down the kubernetes cluster. The virtual
 kubernetes cluster created by minikube can be torn
 down with the following command:</p>
-<pre class="codehilite"><code>minikube stop</code></pre>
+<div class="codehilite"><pre><span></span>minikube stop
+</pre></div>
                 
                   
                 
@@ -557,7 +581,7 @@ down with the following command:</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href=".." title="Index" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../installing/" title="Installing" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -566,7 +590,7 @@ down with the following command:</p>
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Index
+                Installing
               </span>
             </div>
           </a>

@@ -253,6 +253,18 @@
 
 
   <li class="md-nav__item">
+    <a href="installing/" title="Installing" class="md-nav__link">
+      Installing
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
     <a href="quickstart/" title="Quickstart" class="md-nav__link">
       Quickstart
     </a>
@@ -277,8 +289,8 @@
 
 
   <li class="md-nav__item">
-    <a href="kubernetes_aws/" title="K8s with AWS" class="md-nav__link">
-      K8s with AWS
+    <a href="kubernetes_gcp/" title="K8s with GCP" class="md-nav__link">
+      K8s with GCP
     </a>
   </li>
 
@@ -289,8 +301,8 @@
 
 
   <li class="md-nav__item">
-    <a href="kubernetes_gcp/" title="K8s with GCP" class="md-nav__link">
-      K8s with GCP
+    <a href="kubernetes_aws/" title="K8s with AWS" class="md-nav__link">
+      K8s with AWS
     </a>
   </li>
 
@@ -349,7 +361,11 @@
                 
                 <h1 id="2019-snakemake-byok8s">2019-snakemake-byok8s<a class="headerlink" href="#2019-snakemake-byok8s" title="Permanent link">&para;</a></h1>
 <p><a href="https://travis-ci.org/charlesreid1/2019-snakemake-byok8s"><img alt="travis" src="https://img.shields.io/travis/charlesreid1/2019-snakemake-byok8s.svg" /></a>
-<a href="https://github.com/charlesreid1/2019-snakemake-byok8s/blob/master/LICENSE"><img alt="license" src="https://img.shields.io/github/license/charlesreid1/2019-snakemake-byok8s.svg" /></a></p>
+<a href="https://github.com/charlesreid1/2019-snakemake-byok8s/blob/master/LICENSE"><img alt="license" src="https://img.shields.io/github/license/charlesreid1/2019-snakemake-byok8s.svg" /></a>
+<img alt="minikube 0.32" src="https://img.shields.io/badge/minikube-%3E%3D0.32-blue.svg" />
+<img alt="k8s 0.12" src="https://img.shields.io/badge/kubernetes-%3E%3D0.12-blue.svg" />
+<img alt="ubuntu bionic" src="https://img.shields.io/badge/ubuntu_bionic-16.04-orange.svg" />
+<img alt="ubuntu xenial" src="https://img.shields.io/badge/ubuntu_xenial-18.04-orange.svg" /></p>
 <h1 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h1>
 <p>This is an example of a Snakemake workflow that:</p>
 <ul>
@@ -358,12 +374,16 @@
 <li>is designed to run on a <strong>Kubernetes (k8s) cluster</strong></li>
 <li>can be <strong>tested with Travis CI</strong> (and/or locally) using <a href="https://github.com/kubernetes/minikube">minikube</a></li>
 </ul>
-<h2 id="how-is-byok8s-invoked">How is byok8s invoked?<a class="headerlink" href="#how-is-byok8s-invoked" title="Permanent link">&para;</a></h2>
-<p>Snakemake functionality is provided through
-a command line tool called <code>byok8s</code>, so that
-it allows you to do this (also see the 
-<a href="quickstart/">Quickstart Guide</a>).</p>
-<pre class="codehilite"><code># Install byok8s
+<h2 id="what-is-byok8s">What is byok8s?<a class="headerlink" href="#what-is-byok8s" title="Permanent link">&para;</a></h2>
+<p>byok8s = Bring Your Own Kubernetes (cluster)</p>
+<p>k8s = kubernetes</p>
+<p>byok8s is a command line utility that launches
+a Snakemake workflow on an existing Kubernetes
+cluster. This allows you to do something
+like this (also see the <a href="installing/">Installation</a>
+and <a href="quickstart/">Quickstart</a> guides in the
+documentation):</p>
+<div class="codehilite"><pre><span></span># Install byok8s
 python setup.py build install
 
 # Create virtual k8s cluster
@@ -374,34 +394,41 @@ cd /path/to/workflow/
 byok8s my-workflowfile my-paramsfile --s3-bucket=my-bucket
 
 # Clean up the virtual k8s cluster
-minikube stop</code></pre>
+minikube stop
+</pre></div>
 
 
 <h2 id="getting-up-and-running">Getting Up and Running<a class="headerlink" href="#getting-up-and-running" title="Permanent link">&para;</a></h2>
-<p>See the <a href="quickstart/">Quickstart Guide</a> to get up and running with 
-byok8s on an AWS node.</p>
+<p>See the <a href="quickstart/">Quickstart Guide</a> to get up and 
+running with byok8s.</p>
 <h2 id="how-does-byok8s-work">How does byok8s work?<a class="headerlink" href="#how-does-byok8s-work" title="Permanent link">&para;</a></h2>
-<p>The command line utility requires the user to provide three inputs:</p>
+<p>The command line utility requires the user to provide 
+three input files:</p>
 <ul>
 <li>A snakemake workflow, via a <code>Snakefile</code></li>
 <li>A workflow configuration file (JSON)</li>
 <li>A workflow parameters file (JSON)</li>
 </ul>
-<p>Additionally, the user must have a Kubernetes cluster running.
-(The approach is for the user to bring their own Kubernetes cluster
-to the table - hence byok8s = Bring Your Own Kubernetes).</p>
+<p>Additionally, the user must create the following resources:</p>
+<ul>
+<li>A kubernetes cluster up and running</li>
+<li>An S3 bucket (and AWS credentials to read/write)</li>
+</ul>
+<p>A sample Snakefile, workflow config file, and workflow
+params file are provided in the <code>test/</code> directory.</p>
 <p>The workflow config file specifies which workflow targets
 and input files to use.</p>
 <p>The workflow parameters file specifies which parameters to
 use for the workflow steps.</p>
-<h2 id="why-s3-buckets">Why S3 Buckets?<a class="headerlink" href="#why-s3-buckets" title="Permanent link">&para;</a></h2>
+<h2 id="why-s3-buckets">Why S3 buckets?<a class="headerlink" href="#why-s3-buckets" title="Permanent link">&para;</a></h2>
 <p>AWS credentials and an S3 bucket is required to run workflows because 
 of restrictions on file I/O on nodes in a kubernes cluster. The Snakemake
 workflows use AWS S3 buckets as remote providers for the Kubernetes nodes,
 but this can be modified to any others that Snakemake supports.</p>
 <p>AWS credentials are set with the two environment variables:</p>
-<pre class="codehilite"><code>AWS_ACCESS_KEY_ID
-AWS_SECRET_ACCESS_KEY</code></pre>
+<div class="codehilite"><pre><span></span>AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+</pre></div>
 
 
 <p>These are passed into the Kubernetes cluster by byok8s and Snakemake.</p>
@@ -433,6 +460,7 @@ We have guides for the following:</p>
 <th>Cloud Provider</th>
 <th>Kubernetes Service</th>
 <th>Guide</th>
+<th>State</th>
 </tr>
 </thead>
 <tbody>
@@ -440,21 +468,25 @@ We have guides for the following:</p>
 <td>Minikube (on AWS EC2)</td>
 <td>Minikube</td>
 <td><a href="kubernetes_minikube/">byok8s Minikube Guide</a></td>
+<td>Finished</td>
 </tr>
 <tr>
 <td>Google Cloud Platform (GCP)</td>
 <td>Google Container Engine (GKE)</td>
 <td><a href="kubernetes_gcp/">byok8s GCP GKE Guide</a></td>
+<td>Finished</td>
 </tr>
 <tr>
 <td>Amazon Web Services (AWS)</td>
 <td>Elastic Container Service (EKS)</td>
 <td><a href="kubernetes_aws/">byok8s AWS EKS Guide</a></td>
+<td>Unfinished</td>
 </tr>
 <tr>
 <td>Digital Ocean (DO)</td>
 <td>DO Kubernetes (DOK)</td>
 <td><a href="kubernetes_dok/">byok8s DO DOK Guide</a></td>
+<td>Unfinished</td>
 </tr>
 </tbody>
 </table>
@@ -480,13 +512,13 @@ We have guides for the following:</p>
       <nav class="md-footer-nav__inner md-grid">
         
         
-          <a href="quickstart/" title="Quickstart" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="installing/" title="Installing" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Quickstart
+                Installing
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
