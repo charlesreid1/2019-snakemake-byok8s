@@ -77,19 +77,22 @@ coredns-86c58d9df4-pr52t           0/1     CrashLoopBackOff   5          5m17s
 ...                                ...     ...                ...        ...
 ```
 
-To fix, use 
+To fix the problem with the DNS settings, we have to patch
+the CoreDNS image being used by `kube-system`.
+To do that, use the file
 [`test/fixcoredns.yml`](https://github.com/charlesreid1/2019-snakemake-byok8s/blob/master/test/fixcoredns.yml)
-file in the repository:
+in this repository with `kubectl apply`:
 
 ```plain
 # Fix the DNS container
 kubectl apply -f fixcoredns.yml
 
-# Restart all k8s system containers
+# Delete all kube-system containers
 kubectl delete --all pods --namespace kube-system
 ```
 
-The k8s cluster will automatically restart.
+The kube-system containers will be re-spawned by the cluster control system.
+It should happen in a few seconds, and then you'll be ready to run byok8s:
 
 ```
 # Return to our virtual environment
@@ -107,9 +110,6 @@ export AWS_SECRET_ACCESS_KEY="XXXXX"
 byok8s workflow-alpha params-blue --s3-bucket=mah-bukkit 
 ```
 
-
-
-
-
-
+Congratulations! You've just run an executable Snakemake workflow
+on a minikube kubernetes cluster.
 
