@@ -16,12 +16,18 @@ This is an example of a Snakemake workflow that:
 - is designed to run on a **Kubernetes (k8s) cluster**
 - can be **tested with Travis CI** (and/or locally) using [minikube](https://github.com/kubernetes/minikube)
 
-## How is byok8s invoked?
+## What is byok8s?
 
-Snakemake functionality is provided through
-a command line tool called `byok8s`, so that
-it allows you to do this (also see the 
-[Quickstart Guide](quickstart.md)).
+byok8s = Bring Your Own Kubernetes (cluster)
+
+k8s = kubernetes
+
+byok8s is a command line utility that launches
+a Snakemake workflow on an existing Kubernetes
+cluster. This allows you to do something
+like this (also see the [Installation](installing.md)
+and [Quickstart](quickstart.md) guides in the
+documentation):
 
 ```
 # Install byok8s
@@ -40,20 +46,25 @@ minikube stop
 
 ## Getting Up and Running
 
-See the [Quickstart Guide](quickstart.md) to get up and running with 
-byok8s on an AWS node.
+See the [Quickstart Guide](quickstart.md) to get up and 
+running with byok8s.
 
 ## How does byok8s work?
 
-The command line utility requires the user to provide three inputs:
+The command line utility requires the user to provide 
+three input files:
 
 * A snakemake workflow, via a `Snakefile`
 * A workflow configuration file (JSON)
 * A workflow parameters file (JSON)
 
-Additionally, the user must have a Kubernetes cluster running.
-(The approach is for the user to bring their own Kubernetes cluster
-to the table - hence byok8s = Bring Your Own Kubernetes).
+Additionally, the user must create the following resources:
+
+* A kubernetes cluster up and running
+* An S3 bucket (and AWS credentials to read/write)
+
+A sample Snakefile, workflow config file, and workflow
+params file are provided in the `test/` directory.
 
 The workflow config file specifies which workflow targets
 and input files to use.
@@ -61,7 +72,7 @@ and input files to use.
 The workflow parameters file specifies which parameters to
 use for the workflow steps.
 
-## Why S3 Buckets?
+## Why S3 buckets?
 
 AWS credentials and an S3 bucket is required to run workflows because 
 of restrictions on file I/O on nodes in a kubernes cluster. The Snakemake
@@ -105,10 +116,10 @@ We have guides for the following:
 
 # Kubernetes + byok8s: In Practice
 
-|  Cloud Provider             | Kubernetes Service              | Guide                                           |
-|-----------------------------|---------------------------------|-------------------------------------------------|
-| Minikube (on AWS EC2)       | Minikube                        | [byok8s Minikube Guide](kubernetes_minikube.md) |
-| Google Cloud Platform (GCP) | Google Container Engine (GKE)   | [byok8s GCP GKE Guide](kubernetes_gcp.md)       | 
-| Amazon Web Services (AWS)   | Elastic Container Service (EKS) | [byok8s AWS EKS Guide](kubernetes_aws.md)       | 
-| Digital Ocean (DO)          | DO Kubernetes (DOK)             | [byok8s DO DOK Guide](kubernetes_dok.md)        | 
+|  Cloud Provider             | Kubernetes Service              | Guide                                           | State      |
+|-----------------------------|---------------------------------|-------------------------------------------------|------------|
+| Minikube (on AWS EC2)       | Minikube                        | [byok8s Minikube Guide](kubernetes_minikube.md) |   Finished |
+| Google Cloud Platform (GCP) | Google Container Engine (GKE)   | [byok8s GCP GKE Guide](kubernetes_gcp.md)       |   Finished |
+| Amazon Web Services (AWS)   | Elastic Container Service (EKS) | [byok8s AWS EKS Guide](kubernetes_aws.md)       | Unfinished |
+| Digital Ocean (DO)          | DO Kubernetes (DOK)             | [byok8s DO DOK Guide](kubernetes_dok.md)        | Unfinished |
 

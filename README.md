@@ -11,206 +11,120 @@
 
 This is an example of a Snakemake workflow that:
 
-- is a command line utility
-- is bundled as a Python package
-- is designed to run on a Kubernetes cluster
-- can be tested locally or with Travis CI using minikube
+- is a **command line utility** called `byok8s`
+- is bundled as an installable **Python package**
+- is designed to run on a **Kubernetes (k8s) cluster**
+- can be **tested with Travis CI** (and/or locally) using [minikube](https://github.com/kubernetes/minikube)
 
-Snakemake functionality is provided through
-a command line tool called `byok8s`, so that
-it allows you to do this (abbreviated for clarity):
+## What is byok8s?
+
+byok8s = Bring Your Own Kubernetes (cluster)
+
+k8s = kubernetes
+
+byok8s is a command line utility that launches
+a Snakemake workflow on an existing Kubernetes
+cluster. This allows you to do something
+like this (also see the [Installation](installing.md)
+and [Quickstart](quickstart.md) guides in the
+documentation):
 
 ```
+# Install byok8s
+python setup.py build install
+
 # Create virtual k8s cluster
 minikube start
 
-# Run the workflow
-byok8s --s3-bucket=mah-bukkit my-workflowfile my-paramsfile
+# Run the workflow on the k8s cluster
+cd /path/to/workflow/
+byok8s my-workflowfile my-paramsfile --s3-bucket=my-bucket
 
 # Clean up the virtual k8s cluster
 minikube stop
 ```
 
+## Getting Up and Running
 Snakemake workflows are provided via a Snakefile by
 the user. Snakemake runs tasks on the Kubernetes (k8s)
 cluster. The approach is for the user to provide
 their own Kubernetes cluster (byok8s = Bring Your
-Own Kubernetes).
 
-The example above uses [`minikube`](https://github.com/kubernetes/minikube)
-to make a virtual k8s cluster, useful for testing.
+See the [Quickstart Guide](quickstart.md) to get up and 
+running with byok8s.
+
+## How does byok8s work?
+
+The command line utility requires the user to provide 
+three input files:
+
+* A snakemake workflow, via a `Snakefile`
+* A workflow configuration file (JSON)
+* A workflow parameters file (JSON)
+
+Additionally, the user must create the following resources:
+
+* A kubernetes cluster up and running
+* An S3 bucket (and AWS credentials to read/write)
+
+A sample Snakefile, workflow config file, and workflow
+params file are provided in the `test/` directory.
+
+The workflow config file specifies which workflow targets
+and input files to use.
+
+The workflow parameters file specifies which parameters to
+use for the workflow steps.
+
+## Why S3 buckets?
+
+AWS credentials and an S3 bucket is required to run workflows because 
+of restrictions on file I/O on nodes in a kubernes cluster. The Snakemake
+workflows use AWS S3 buckets as remote providers for the Kubernetes nodes,
+but this can be modified to any others that Snakemake supports.
+
+AWS credentials are set with the two environment variables:
+
+```
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+```
+
+These are passed into the Kubernetes cluster by byok8s and Snakemake.
+
+## Kubernetes and Minikube
+
+[Kubernetes](https://kubernetes.io/) is a technology that utilizes Docker
+container to orchestrate a cluster of compute nodes. These compute nodes are
+usually real compute nodes requested and managed via a cloud provider, like AWS
+or Google Cloud.
+
+But the compute nodes can also be virtual, which is where
+[minikube](https://github.com/kubernetes/minikube) comes in.  It creates a
+kubernetes cluster that is entirely local and virtual, which makes testing
+easy. See the [byok8s Minikube Guide](kubernetes_minikube.md) for details
+about how to use minikube with byok8s.
+
+The Travis CI tests also utilize minikube to run test workflows. See [byok8s
+Travis Tests](travis_tests.md) for more information.
+
+## Cloud Providers
 
 For real workflows, your options for
-kubernetes clusters are cloud providers:
+kubernetes clusters are cloud providers.
+We have guides for the following:
 
 - AWS EKS (Elastic Container Service)
 - GCP GKE (Google Kuberntes Engine)
 - Digital Ocean Kubernetes service
-- etc...
 
-The Travis CI tests utilize minikube to run 
-test workflows.
+# Kubernetes + byok8s: In Practice
 
-# Quickstart
+|  Cloud Provider             | Kubernetes Service              | Guide                                           | State      |
+|-----------------------------|---------------------------------|-------------------------------------------------|------------|
+| Minikube (on AWS EC2)       | Minikube                        | [byok8s Minikube Guide](kubernetes_minikube.md) |   Finished |
+| Google Cloud Platform (GCP) | Google Container Engine (GKE)   | [byok8s GCP GKE Guide](kubernetes_gcp.md)       |   Finished |
+| Amazon Web Services (AWS)   | Elastic Container Service (EKS) | [byok8s AWS EKS Guide](kubernetes_aws.md)       | Unfinished |
+| Digital Ocean (DO)          | DO Kubernetes (DOK)             | [byok8s DO DOK Guide](kubernetes_dok.md)        | Unfinished |
 
-This runs through the installation and usage 
-of `2019-snakemake-byok8s`.
-
-Step 1: Set up Kubernetes cluster with `minikube`.
-
-Step 2: Install `byok8s`.
-
-Step 3: Run the `byok8s` workflow using the Kubernetes cluster. 
-
-Step 4: Tear down Kubernetes cluster with `minikube`.
-
-
-## Step 1: Set Up Virtual Kubernetes Cluster 
-
-For the purposes of the quickstart, we will walk
-through how to set up a local, virtual Kubernetes
-cluster using `minikube`.
-
-Start by installing minikube:
-
-```
-scripts/install_minikube.sh
-```
-
-Once it is installed, you can start up a kubernetes cluster
-with minikube using the following commands:
-
-```
-cd test
-minikube start
-```
-
-NOTE: If you are running on AWS, run this command first
-
-```
-minikube config set vm-driver none
-```
-
-to set the the vm driver to none and use native Docker to run stuff.
-
-If you are running on AWS, the DNS in the minikube
-kubernetes cluster will not work, so run this command
-to fix the DNS settings (should be run from the
-`test/` directory):
-
-```
-kubectl apply -f fixcoredns.yml
-kubectl delete --all pods --namespace kube-system
-```
-
-
-## Step 2: Install byok8s
-
-Start by setting up a python virtual environment,
-and install the required packages into the
-virtual environment:
-
-```
-pip install -r requirements.txt
-```
-
-This installs snakemake and kubernetes Python
-modules. Now install the `byok8s` command line
-tool:
-
-```
-python setup.py build install
-```
-
-Now you can run:
-
-```
-which byok8s
-```
-
-and you should see `byok8s` in your virtual 
-environment's `bin/` directory.
-
-This command line utility will expect a kubernetes
-cluster to be set up before it is run. 
-
-Setting up a kubernetes cluster will create...
-(fill in more info here)...
-
-Snakemake will automatically create the pods
-in the cluster, so you just need to allocate
-a kubernetes cluster.
-
-
-## Step 3: Run byok8s
-
-Now you can run the workflow with the `byok8s` command.
-This submits the Snakemake workflow jobs to the Kubernetes
-cluster that minikube created.
-
-You should have your workflow in a `Snakefile` in the
-current directory. Use the `--snakefile` flag if it is
-named something other than `Snakefile`.
-
-You will also need to specify your AWS credentials
-via the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`
-environment variables. These are used to to access
-S3 buckets for file I/O.
-
-Finally, you will need to create an S3 bucket for
-Snakemake to use for file I/O. Pass the name of the
-bucket using the `--s3-bucket` flag.
-
-Start by exporting these two vars (careful to
-scrub them from bash history):
-
-```
- export AWS_ACCESS_KEY_ID=XXXXX
- export AWS_SECRET_ACCESS_KEY=XXXXX
-```
-
-Run the alpha workflow with blue params:
-
-```
-byok8s --s3-bucket=mah-bukkit workflow-alpha params-blue
-```
-
-Run the alpha workflow with red params:
-
-```
-byok8s --s3-bucket=mah-bukkit workflow-alpha params-red
-```
-
-Run the gamma workflow with red params, &c:
-
-```
-byok8s --s3-bucket=mah-bukkit workflow-gamma params-red
-```
-
-(NOTE: May want to let the user specify 
-input and output directories with flags.)
-
-All input files are searched for relative to the working
-directory.
-
-
-## Step 4: Tear Down Kubernetes Cluster
-
-The last step once the workflow has been finished,
-is to tear down the kubernetes cluster. The virtual
-kubernetes cluster created by minikube can be torn
-down with the following command:
-
-```
-minikube stop
-```
-
-# Using Kubernetes with Cloud Providers
-
-|  Cloud Provider             | Kubernetes Service              | Guide                                        |
-|-----------------------------|---------------------------------|----------------------------------------------|
-| Minikube (on AWS EC2)       | Minikube                        | [Minikube AWS Guide](kubernetes_minikube.md) |
-| Google Cloud Platform (GCP) | Google Container Engine (GKE)   | [GCP GKE Guide](kubernetes_gcp.md)           | 
-| Amazon Web Services (AWS)   | Elastic Container Service (EKS) | [AWS EKS Guide](kubernetes_aws.md)           | 
-| Digital Ocean (DO)          | DO Kubernetes (DOK)             | [DO DOK Guide](kubernetes_dok.md)            | 
-
+Own Kubernetes).
