@@ -40,9 +40,9 @@ utility will let you know if it needs APIs enabled for actions.  If it can't
 enable the API for you, it will give you a direct link to the relevant Google
 Cloud Console page.
 
-## Google Kubernetes Engine
+## Google Kubernetes Engine (GKE)
 
-GKE uses Google Cloud compute nodes to run a kubernetes cluster
+GKE uses GCP compute nodes to run a kubernetes cluster
 on Google Cloud infrastructure. It automatically sets up the
 cluster for you, and allows you to use `kubectl` and `gcloud` to
 manage and interact with the remote cluster.
@@ -254,6 +254,9 @@ Events:
   Normal  Created                6s    kubelet, gke-mycluster-default-pool-b44fa389-vh3x  Created container
   Normal  Started                6s    kubelet, gke-mycluster-default-pool-b44fa389-vh3x  Started container
 ```
+
+Congratulations! You've successfully run an executable Snakemake workflow
+on a Google Cloud kubernetes cluster!
 
 Delete the GKE cluster when you are done:
 
