@@ -1,6 +1,6 @@
 # Installing byok8s
 
-byok8s requires two things:
+byok8s requires pieces of prerequisite software:
 
 - python (conda)
 - virtualenv (optional)
@@ -10,12 +10,12 @@ a local virtual kubernetes cluster, you must install:
 
 - minikube
 
-If you are planning on running byok8s on remote 
+Otherwise, if you are planning on running byok8s on remote 
 kubernetes clusters provided by cloud providers
 or etc., you must install:
 
 - kubernetes, ***OR***
-- cloud provider command line tool
+- a cloud provider command line tool (`gcloud`, `aws`) 
 
 ## Installing Python
 
@@ -43,7 +43,7 @@ set up a virtual environment:
 pip install virtualenv
 ```
 
-## Installing Minikube
+## Installing minikube
 
 This step is only required if you plan to run byok8s
 kubernetes workflows locally on a virtual kubernetes
